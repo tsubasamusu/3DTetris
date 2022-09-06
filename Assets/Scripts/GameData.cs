@@ -17,6 +17,9 @@ public class GameData : MonoBehaviour
     [SerializeField]
     private float timeLimit;//制限時間
 
+    [SerializeField, Header("ブロックの生成予定の数")]
+    private int appointmentsNumber;//ブロックの生成予定の数
+
     /// <summary>
     /// 得点取得用
     /// </summary>
@@ -40,6 +43,12 @@ public class GameData : MonoBehaviour
     /// </summary>
     public float TimeLimit
     { get { return timeLimit; } }
+
+    /// <summary>
+    /// 「ブロックの生成予定の数」取得用
+    /// </summary>
+    public int AppointmentsNumber
+    { get { return appointmentsNumber; } }
 
     /// <summary>
     /// Startメソッドより前に呼び出される

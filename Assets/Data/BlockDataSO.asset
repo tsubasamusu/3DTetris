@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff6db73ed6c391a4e9957ee6209308f4, type: 3}
   m_Name: BlockDataSO
   m_EditorClassIdentifier: 
-  bgmDataList:
+  blockDataList:
   - name: 0
     prefab: {fileID: 1170284240621965557, guid: 0b9d3230f8542d440987220fc17280fc, type: 3}
     sprite: {fileID: 21300000, guid: 2c5c7fa61103ef647a4d473f35afaa04, type: 3}

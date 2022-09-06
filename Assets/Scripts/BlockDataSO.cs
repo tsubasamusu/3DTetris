@@ -32,5 +32,5 @@ public class BlockDataSO : ScriptableObject
         public Sprite sprite;//スプライト
     }
 
-    public List<BlockData> bgmDataList = new List<BlockData>();//ブロックのデータのリスト
+    public List<BlockData> blockDataList = new List<BlockData>();//ブロックのデータのリスト
 }

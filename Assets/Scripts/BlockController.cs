@@ -10,6 +10,8 @@ public class BlockController : MonoBehaviour
 
     private BlockDataSO.BlockData myBlockData;//自分のブロックのデータ
 
+    private bool isSideLimit;//ステージの端にいるかどうか
+
     /// <summary>
     /// 自身の生成開始直後に呼び出される
     /// </summary>
@@ -24,14 +26,35 @@ public class BlockController : MonoBehaviour
     /// </summary>
     private void Update()
     {
+        //下方向の他のブロックに触れたら
+        if(CheckContactedDown())
+        {
+            //BlockManagerから適切な処理を呼び出す
+            BlockManager.instance.StoppedCurrentBlock();
+
+            //以降の処理を行わない
+            return;
+        }
+
         //ブロックの落下速度を設定
         currentFallSpeed = Input.GetKey(KeyCode.DownArrow) ? GameData.instance.SpecialFallSpeed : GameData.instance.NormalFallSpeed;
 
         //右矢印が押されたら
         if(Input.GetKeyDown(KeyCode.RightArrow))
         {
+            //ステージの端にいたら
+            if(CheckContactedSide())
+            {
+                //カメラから見て右にいたら
+                if (mainCamera.transform.position.z<0f&&transform.position.x>0f||mainCamera.transform.position.z>=0f&&transform.position.x<0f)
+                {
+                    //以降の処理を行わない
+                    return;
+                }
+            }
+
             //カメラの位置に応じて移動方向を設定
-            float moveValue = mainCamera.transform.position.z < 0 ? 1f : -1f;
+            float moveValue = mainCamera.transform.position.z < 0f ? 1f : -1f;
 
             //カメラから見て右に移動する
             transform.Translate(new Vector3(moveValue, 0f, 0f));
@@ -39,8 +62,19 @@ public class BlockController : MonoBehaviour
         //左矢印が押されたら
         else if(Input.GetKeyDown(KeyCode.LeftArrow))
         {
+            //ステージの端にいたら
+            if (CheckContactedSide())
+            {
+                //カメラから見て左にいたら
+                if (mainCamera.transform.position.z < 0f && transform.position.x < 0f || mainCamera.transform.position.z >= 0f && transform.position.x > 0f)
+                {
+                    //以降の処理を行わない
+                    return;
+                }
+            }
+
             //カメラの位置に応じて移動方向を設定
-            float moveValue = mainCamera.transform.position.z < 0 ? -1f : 1f;
+            float moveValue = mainCamera.transform.position.z < 0f ? -1f : 1f;
 
             //カメラから見て左に移動する
             transform.Translate(new Vector3(moveValue,0f,0f));
@@ -82,14 +116,27 @@ public class BlockController : MonoBehaviour
     }
 
     /// <summary>
-    /// 他のコライダーに触れたら呼び出される
+    /// 横方向の他のブロックに接触したかどうか調べる
     /// </summary>
-    /// <param name="collision">触れた相手</param>
-    private void OnCollisionEnter(Collision collision)
+    /// <returns>横方向の他のブロックに接触したらtrue</returns>
+    private bool CheckContactedSide()
     {
-        Debug.Log("HIT");
-        //BlockManagerから適切な処理を呼び出す
-        BlockManager.instance.StoppedCurrentBlock();
+        //TODO:各ブロックから横に光線を発射し、接触判定を取得する処理
+
+        //（仮）
+        return false;
+    }
+
+    /// <summary>
+    /// 下方向の他のブロックに接触したかどうか調べる
+    /// </summary>
+    /// <returns>下方向の他のブロックに接触したらtrue</returns>
+    private bool CheckContactedDown()
+    {
+        //TODO:各ブロックから下に光線を発射し、接触判定を取得する処理
+
+        //（仮）
+        return false;
     }
 
     /// <summary>

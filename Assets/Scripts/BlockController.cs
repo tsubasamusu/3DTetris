@@ -52,8 +52,17 @@ public class BlockController : MonoBehaviour
             //TODO:ホールド・使用する処理
         }
 
+        //自身が回転できない座標にいたら
+        if (Mathf.Abs(transform.position.x)>myBlockData.maxRotPosX)
+        {
+            //TODO:SoundManagerから「ブッブー」という効果音を鳴らす処理を呼び出す
+
+            //以降の処理を行わない
+            return;
+        }
+
         //左クリックされたら
-        if(Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             //カメラの位置に応じて回転方向を設定
             float rotateValue = mainCamera.transform.position.z < 0 ? 90f : -90f;
@@ -70,6 +79,16 @@ public class BlockController : MonoBehaviour
     {
         //ブロックを落下させる
         transform.Translate(new Vector3(0f,-currentFallSpeed,0f));
+    }
+
+    /// <summary>
+    /// 他のコライダーに触れたら呼び出される
+    /// </summary>
+    /// <param name="collision">触れた相手</param>
+    private void OnCollisionEnter(Collision collision)
+    {
+        //BlockManagerから適切な処理を呼び出す
+        BlockManager.instance.StoppedCurrentBlock();
     }
 
     /// <summary>

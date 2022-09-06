@@ -24,6 +24,9 @@ public class BlockGenerator : MonoBehaviour
             //生成予定のブロックのデータの配列の各要素にランダムなデータを入れる
             nextBlockDatas[i] = blockDataSO.blockDataList[Random.Range(0, blockDataSO.blockDataList.Count)];
         }
+
+        //（仮）
+        GenerateBlock();
     }
 
     /// <summary>
@@ -45,7 +48,7 @@ public class BlockGenerator : MonoBehaviour
         if(generatedBlock.TryGetComponent(out BlockController blockController))
         {
             //生成したブロックに、そのブロック自身の情報を渡す
-            blockController.SetUpBlock(blockDataSO.blockDataList.Find(x => x.prefab == generatedBlock));
+            blockController.SetUpBlock(nextBlockDatas[0]);
         }
         //取得に失敗したら
         else

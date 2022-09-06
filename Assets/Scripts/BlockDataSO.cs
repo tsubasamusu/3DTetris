@@ -33,7 +33,6 @@ public class BlockDataSO : ScriptableObject
         [Header("オブジェクトの幅が奇数かどうか")]
         public bool isOddWidth;//オブジェクトの幅が奇数かどうか
         public float maxRotPosX;//回転可能なxの最大値
-        public float minRotPosX;//回転可能なxの最小値
     }
 
     public List<BlockData> blockDataList = new List<BlockData>();//ブロックのデータのリスト

@@ -8,10 +8,13 @@ public class GameData : MonoBehaviour
 
     private int score;//得点
 
+    [SerializeField]
     private float normalFallSpeed;//ブロックの降下速度（普通）
 
+    [SerializeField]
     private float specialFallSpeed;//ブロックの降下速度（特別）
 
+    [SerializeField]
     private float timeLimit;//制限時間
 
     /// <summary>

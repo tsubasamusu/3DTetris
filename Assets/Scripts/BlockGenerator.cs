@@ -26,7 +26,7 @@ public class BlockGenerator : MonoBehaviour
         }
 
         //ÅiâºÅj
-        GenerateBlock();
+        BlockManager.instance.CurrentBlock= GenerateBlock();
     }
 
     /// <summary>

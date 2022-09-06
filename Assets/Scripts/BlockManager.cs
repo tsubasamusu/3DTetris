@@ -10,9 +10,15 @@ public class BlockManager : MonoBehaviour
     private BlockGenerator blockGenerator;//BlockGenerator
 
     [HideInInspector]
-    public List<GameObject> currentBlocksList=new List<GameObject>();//現在、ステージ上に蓄積されているブロックのリスト
+    public List<GameObject> cubeList=new List<GameObject>();//現在、ステージ上に蓄積されている立方体のリスト
 
-    private GameObject currentBlock;//現在プレーヤーが操作しているブロック
+    private GameObject currentBlock;//現在アクティブなブロック
+
+    /// <summary>
+    /// 現在アクティブなブロックの設定用
+    /// </summary>
+    public GameObject CurrentBlock
+    { set { currentBlock = value; } }
 
     /// <summary>
     /// Startメソッドより前に呼び出される
@@ -35,8 +41,12 @@ public class BlockManager : MonoBehaviour
     /// </summary>
     public void StoppedCurrentBlock()
     {
-        //現在アクティブなブロックをリストに追加
-        currentBlocksList.Add(currentBlock);
+        //現在アクティブなブロックの孫の数だけ繰り返す
+        for(int i = 0; i < currentBlock.transform.GetChild(0).transform.childCount; i++)
+        {
+            //現在アクティブなブロックの全ての孫をリストに追加
+            cubeList.Add(currentBlock.transform.GetChild(0).transform.GetChild(i).gameObject);
+        }
 
         //現在アクティブなブロックからBlockControllerを取得出来たら
         if(currentBlock.TryGetComponent(out BlockController blockController))

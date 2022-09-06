@@ -43,6 +43,22 @@ public class BlockController : MonoBehaviour
             //カメラから見て左に移動する
             transform.Translate(new Vector3(moveValue,0f,0f));
         }
+
+        //上矢印が押されたら
+        if(Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            //TODO:ホールド・使用する処理
+        }
+
+        //左クリックされたら
+        if(Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            //カメラの位置に応じて回転方向を設定
+            float rotateValue = mainCamera.transform.position.z < 0 ? 90f : -90f;
+
+            //カメラから見て反時計回りに回転させる
+            transform.GetChild(0).transform.eulerAngles = new Vector3(0f,0f, transform.GetChild(0).transform.eulerAngles.z+rotateValue);
+        }
     }
 
     /// <summary>

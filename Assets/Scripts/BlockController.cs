@@ -148,9 +148,21 @@ public class BlockController : MonoBehaviour
     /// <returns>下方向の他のブロックに接触したらtrue</returns>
     private bool CheckContactedDown()
     {
-        //TODO:各ブロックから下に光線を発射し、接触判定を取得する処理
+        //自身の孫の数だけ繰り返す
+        for (int i = 0; i < transform.GetChild(0).transform.childCount; i++)
+        {
+            //孫からの光線を作成
+            Ray ray = new(transform.GetChild(0).transform.GetChild(i).transform.position, Vector3.down);
 
-        //（仮）
+            //光線が他のコライダーに接触したら
+            if (Physics.Raycast(ray, 0.6f))
+            {
+                //trueを返す
+                return true;
+            }
+        }
+
+        //falseを返す
         return false;
     }
 

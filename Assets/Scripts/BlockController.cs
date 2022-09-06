@@ -87,6 +87,7 @@ public class BlockController : MonoBehaviour
     /// <param name="collision">G‚ê‚½‘Šè</param>
     private void OnCollisionEnter(Collision collision)
     {
+        Debug.Log("HIT");
         //BlockManager‚©‚ç“KØ‚Èˆ—‚ğŒÄ‚Ño‚·
         BlockManager.instance.StoppedCurrentBlock();
     }

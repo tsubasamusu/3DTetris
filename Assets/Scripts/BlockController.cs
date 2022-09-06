@@ -130,8 +130,15 @@ public class BlockController : MonoBehaviour
             //孫からの光線を作成
             Ray ray = new(transform.GetChild(0).transform.GetChild(i).transform.position, direction);
 
-            //光線が他のコライダーに接触したら
-            if (Physics.Raycast(ray,0.6f))
+            //光線が他のコライダーに接触しなかったら
+            if (!Physics.Raycast(ray,out RaycastHit hit,0.6f))
+            {
+                //次の繰り返し処理へ移る
+                continue;
+            }
+
+            //触れた相手が自分ではないなら
+            if(hit.transform!=transform)
             {
                 //trueを返す
                 return true;
@@ -154,8 +161,15 @@ public class BlockController : MonoBehaviour
             //孫からの光線を作成
             Ray ray = new(transform.GetChild(0).transform.GetChild(i).transform.position, Vector3.down);
 
-            //光線が他のコライダーに接触したら
-            if (Physics.Raycast(ray, 0.6f))
+            //光線が他のコライダーに接触しなかったら
+            if (!Physics.Raycast(ray, out RaycastHit hit, 0.6f))
+            {
+                //次の繰り返し処理へ移る
+                continue;
+            }
+
+            //触れた相手が自分ではないなら
+            if (hit.transform != transform)
             {
                 //trueを返す
                 return true;

@@ -39,7 +39,7 @@ public class BlockGenerator : MonoBehaviour
         GameObject generatedBlock= Instantiate(nextBlockDatas[0].prefab);
 
         //生成座標のx成分を設定
-        float x = nextBlockDatas[0].isOddWidth ? 0.5f : 0f;
+        float x = nextBlockDatas[0].isEvenWidth ? 0f : 0.5f;
 
         //生成したブロックの位置を設定
         generatedBlock.transform.position = new Vector3(x, 25f, 0f);

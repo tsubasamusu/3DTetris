@@ -90,7 +90,7 @@ public class BlockController : MonoBehaviour
         }
 
         //自身が回転できない座標にいたら
-        if (Mathf.Abs(transform.position.x)>myBlockData.maxRotPosX||transform.position.y<myBlockData.minRotPosY)
+        if (Mathf.Abs(transform.position.x)>(5f-myBlockData.rotLength)||transform.position.y<(0.5f+myBlockData.rotLength))
         {
             //TODO:SoundManagerから「ブッブー」という効果音を鳴らす処理を呼び出す
 

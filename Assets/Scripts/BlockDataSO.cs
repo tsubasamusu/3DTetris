@@ -28,12 +28,16 @@ public class BlockDataSO : ScriptableObject
     public class BlockData
     {　　　　　　　　　
         public BlockName name;//名前
+
         public GameObject prefab;//プレファブ
+
         public Sprite sprite;//スプライト
-        [Header("オブジェクトの幅が奇数かどうか")]
-        public bool isOddWidth;//オブジェクトの幅が奇数かどうか
-        public float maxRotPosX;//回転可能なxの最大値
-        public float minRotPosY;//回転可能なyの最小値
+
+        [Header("オブジェクトの幅が偶数かどうか")]
+        public bool isEvenWidth;//オブジェクトの幅が偶数かどうか
+
+        [Header("回転可能な周囲のオブジェクトとの距離")]
+        public float rotLength;//回転可能な周囲のオブジェクトとの距離
     }
 
     public List<BlockData> blockDataList = new List<BlockData>();//ブロックのデータのリスト

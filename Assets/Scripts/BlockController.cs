@@ -121,9 +121,24 @@ public class BlockController : MonoBehaviour
     /// <returns>横方向の他のブロックに接触したらtrue</returns>
     private bool CheckContactedSide()
     {
-        //TODO:各ブロックから横に光線を発射し、接触判定を取得する処理
+        //自身の孫の数だけ繰り返す
+        for (int i = 0; i < transform.GetChild(0).transform.childCount; i++)
+        {
+            //光線の方向を設定
+            Vector3 direction = transform.GetChild(0).transform.GetChild(i).transform.position.x > 0f ? new Vector3(1f,0f,0f) : new Vector3(-1f,0f,0f);
 
-        //（仮）
+            //孫からの光線を作成
+            Ray ray = new(transform.GetChild(0).transform.GetChild(i).transform.position, direction);
+
+            //光線が他のコライダーに接触したら
+            if (Physics.Raycast(ray,0.6f))
+            {
+                //trueを返す
+                return true;
+            }
+        }
+
+        //falseを返す
         return false;
     }
 

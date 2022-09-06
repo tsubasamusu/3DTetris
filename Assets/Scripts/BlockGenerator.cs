@@ -35,12 +35,8 @@ public class BlockGenerator : MonoBehaviour
         //ブロックを生成
         GameObject generatedBlock= Instantiate(nextBlockDatas[0].prefab);
 
-        //生成座標のx成分
-        float x = 
-            //生成するブロックの名前に応じて値を変更
-            nextBlockDatas[0].name == BlockDataSO.BlockName.T || nextBlockDatas[0].name == BlockDataSO.BlockName.S || nextBlockDatas[0].name == BlockDataSO.BlockName.Z ? 
-            //0.5か0を入れる
-            0.5f : 0f;
+        //生成座標のx成分を設定
+        float x = nextBlockDatas[0].isOddWidth ? 0.5f : 0f;
 
         //生成したブロックの位置を設定
         generatedBlock.transform.position = new Vector3(x, 25f, 0f);

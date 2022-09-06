@@ -30,6 +30,8 @@ public class BlockDataSO : ScriptableObject
         public BlockName name;//名前
         public GameObject prefab;//プレファブ
         public Sprite sprite;//スプライト
+        [Header("オブジェクトの幅が奇数かどうか")]
+        public bool isOddWidth;//オブジェクトの幅が奇数かどうか
     }
 
     public List<BlockData> blockDataList = new List<BlockData>();//ブロックのデータのリスト

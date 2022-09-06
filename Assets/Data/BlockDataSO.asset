@@ -16,21 +16,28 @@ MonoBehaviour:
   - name: 0
     prefab: {fileID: 1170284240621965557, guid: 0b9d3230f8542d440987220fc17280fc, type: 3}
     sprite: {fileID: 21300000, guid: 2c5c7fa61103ef647a4d473f35afaa04, type: 3}
+    isOddWidth: 0
   - name: 1
     prefab: {fileID: 773094042543704224, guid: d4dc198786cf8d14fb8d19bdb30370b6, type: 3}
     sprite: {fileID: 21300000, guid: 43e3a4f92d3c28a47a2bd83d6359f966, type: 3}
+    isOddWidth: 0
   - name: 2
     prefab: {fileID: 1436526465387800753, guid: e4fa95e107ba7d84b86509697ac4388c, type: 3}
     sprite: {fileID: 21300000, guid: b2ca1e12afe8aca4f983e2b92177e3e0, type: 3}
+    isOddWidth: 0
   - name: 3
     prefab: {fileID: 4137525432824061082, guid: d775a6a4fcd563e4f9620042a2aaa5f6, type: 3}
     sprite: {fileID: 21300000, guid: e2109e4fa0c9fd24b8d838668d1ced0b, type: 3}
+    isOddWidth: 0
   - name: 4
     prefab: {fileID: 4343709657280024909, guid: e1108846dc2418a4c80ade15c507f2ab, type: 3}
     sprite: {fileID: 21300000, guid: 7732e7635f1700b42924d4c443dd2ea1, type: 3}
+    isOddWidth: 1
   - name: 5
     prefab: {fileID: 1387207719012686369, guid: c2ca12ca08227a8498645d638d67fd8f, type: 3}
     sprite: {fileID: 21300000, guid: 777be025bed61824b99daa18dd77c437, type: 3}
+    isOddWidth: 1
   - name: 6
     prefab: {fileID: 7896689778722931110, guid: 46e68178e7cd76849ae0710485c0b48a, type: 3}
     sprite: {fileID: 21300000, guid: 6be566c5f131eb946b1333f0fa1f4163, type: 3}
+    isOddWidth: 1

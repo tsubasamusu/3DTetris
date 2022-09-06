@@ -29,6 +29,9 @@ public class BlockController : MonoBehaviour
         //下方向の他のブロックに触れたら
         if(CheckContactedDown())
         {
+            //自身を適切な位置に移動させる
+            SetMeRightPos();
+
             //BlockManagerから適切な処理を呼び出す
             BlockManager.instance.StoppedCurrentBlock();
 
@@ -87,7 +90,7 @@ public class BlockController : MonoBehaviour
         }
 
         //自身が回転できない座標にいたら
-        if (Mathf.Abs(transform.position.x)>myBlockData.maxRotPosX)
+        if (Mathf.Abs(transform.position.x)>myBlockData.maxRotPosX||transform.position.y<myBlockData.minRotPosY)
         {
             //TODO:SoundManagerから「ブッブー」という効果音を鳴らす処理を呼び出す
 
@@ -131,7 +134,7 @@ public class BlockController : MonoBehaviour
             Ray ray = new(transform.GetChild(0).transform.GetChild(i).transform.position, direction);
 
             //光線が他のコライダーに接触しなかったら
-            if (!Physics.Raycast(ray,out RaycastHit hit,0.6f))
+            if (!Physics.Raycast(ray,out RaycastHit hit,0.5f))
             {
                 //次の繰り返し処理へ移る
                 continue;
@@ -162,7 +165,7 @@ public class BlockController : MonoBehaviour
             Ray ray = new(transform.GetChild(0).transform.GetChild(i).transform.position, Vector3.down);
 
             //光線が他のコライダーに接触しなかったら
-            if (!Physics.Raycast(ray, out RaycastHit hit, 0.6f))
+            if (!Physics.Raycast(ray, out RaycastHit hit, 0.5f))
             {
                 //次の繰り返し処理へ移る
                 continue;
@@ -188,5 +191,20 @@ public class BlockController : MonoBehaviour
     {
         //自分のブロックのデータを取得
         myBlockData = yourBlockData;
+    }
+
+    /// <summary>
+    /// 着地後に自身を適切な位置に移動させる
+    /// </summary>
+    private void SetMeRightPos()
+    {
+        //自身のy座標の小数部分（誤差）を取得
+        float excess = transform.position.y % 0.5f;
+
+        //誤差を修正するための値を取得
+        float valueY = excess < 0.25 ? -excess : 0.5f - excess;
+
+        //座標を再設定
+        transform.position = new Vector3(transform.position.x, transform.position.y + valueY, 0f);
     }
 }

@@ -7,7 +7,7 @@ public class BlockManager : MonoBehaviour
     [SerializeField]
     private BlockGenerator blockGenerator;//BlockGenerator
 
-    private BlockDataSO.BlockData currentBlockData;//現在プレーヤーが操作しているブロックのデータ
+    private GameObject currentBlock;//現在プレーヤーが操作しているブロック
 
     /// <summary>
     /// ブロックの管理を開始する
@@ -16,7 +16,7 @@ public class BlockManager : MonoBehaviour
     public IEnumerator StartBlockManagement()
     {
         //ブロックを1度生成し、生成したブロックの情報を取得
-        currentBlockData= blockGenerator.GenerateBlock();
+        currentBlock= blockGenerator.GenerateBlock();
 
         //無限に繰り返す
         while (true)

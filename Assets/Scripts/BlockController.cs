@@ -8,8 +8,10 @@ public class BlockController : MonoBehaviour
 
     private GameObject mainCamera;//メインカメラゲームオブジェクト
 
+    private BlockDataSO.BlockData myBlockData;//自分のブロックのデータ
+
     /// <summary>
-    /// ゲーム開始直後に呼び出される
+    /// 自身の生成開始直後に呼び出される
     /// </summary>
     private void Start()
     {
@@ -68,5 +70,15 @@ public class BlockController : MonoBehaviour
     {
         //ブロックを落下させる
         transform.Translate(new Vector3(0f,-currentFallSpeed,0f));
+    }
+
+    /// <summary>
+    /// 自分のブロックの初期設定を行う
+    /// </summary>
+    /// <param name="yourBlockData">対象のブロックのデータ</param>
+    public void SetUpBlock(BlockDataSO.BlockData yourBlockData)
+    {
+        //自分のブロックのデータを取得
+        myBlockData = yourBlockData;
     }
 }

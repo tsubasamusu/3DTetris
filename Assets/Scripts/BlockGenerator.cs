@@ -29,8 +29,8 @@ public class BlockGenerator : MonoBehaviour
     /// <summary>
     /// ブロックを生成する
     /// </summary>
-    /// <returns>生成したブロックのデータ</returns>
-    public BlockDataSO.BlockData GenerateBlock()
+    /// <returns>生成したブロック</returns>
+    public GameObject GenerateBlock()
     {
         //ブロックを生成
         GameObject generatedBlock= Instantiate(nextBlockDatas[0].prefab);
@@ -41,11 +41,24 @@ public class BlockGenerator : MonoBehaviour
         //生成したブロックの位置を設定
         generatedBlock.transform.position = new Vector3(x, 25f, 0f);
 
+        //生成したブロックからBlockDetailを取得出来たら
+        if(generatedBlock.TryGetComponent(out BlockController blockController))
+        {
+            //生成したブロックに、そのブロック自身の情報を渡す
+            blockController.SetUpBlock(blockDataSO.blockDataList.Find(x => x.prefab == generatedBlock));
+        }
+        //取得に失敗したら
+        else
+        {
+            //問題を報告
+            Debug.Log("生成したブロックからのBlockControllerの取得に失敗");
+        }
+
         //生成予定のブロックのデータを更新する
         UpdateNextBlockDatas();
 
-        //生成したブロックのデータを返す
-        return blockDataSO.blockDataList.Find(x => x.prefab == generatedBlock);
+        //生成したブロックを返す
+        return generatedBlock;
     }
 
     /// <summary>

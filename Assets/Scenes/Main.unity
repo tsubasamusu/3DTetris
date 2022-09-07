@@ -425,7 +425,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockGenerator: {fileID: 1188378069}
-  currentBlocksList: []
+  cubeList: []
 --- !u!4 &537128710
 Transform:
   m_ObjectHideFlags: 0

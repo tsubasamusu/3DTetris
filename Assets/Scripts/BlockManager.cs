@@ -1,6 +1,7 @@
 using System.Collections;//IEnumerator‚ğg—p
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;//DOTween‚ğg—p
 
 public class BlockManager : MonoBehaviour
 {
@@ -76,8 +77,8 @@ public class BlockManager : MonoBehaviour
     /// </summary>
     private void CheckDigested()
     {
-        //Á‰»‚³‚ê‚½—ñ‚Ì”
-        int digestedColumnsCount = 0;
+        //Á‰»‚µ‚½‰ñ”
+        int digestedCount = 0;
 
         //20‰ñŒJ‚è•Ô‚·
         for (int i = 1; i < 21; i++)
@@ -91,9 +92,6 @@ public class BlockManager : MonoBehaviour
                 //Ÿ‚ÌŒJ‚è•Ô‚µˆ—‚ÖˆÚ‚é
                 continue;
             }
-
-            //Á‰»‚³‚ê‚½—ñ‚Ì”‚ğ‹L˜^‚·‚é
-            digestedColumnsCount++;
 
             //10‰ñŒJ‚è•Ô‚·
             for(int j = 0; j < 10; j++)
@@ -110,8 +108,20 @@ public class BlockManager : MonoBehaviour
                 //‘ÎÛ‚Ì—§•û‘Ì‚ğÁ‚·
                 Destroy(cube);
             }
+
+            //Á‰»‚µ‚½‰ñ”‚ğ‹L˜^
+            digestedCount++;
+
+            //ƒXƒe[ƒW‚É’~Ï‚³‚ê‚Ä‚¢‚é—§•û‘Ì‚Ì”‚¾‚¯ŒJ‚è•Ô‚·
+            for (int k = 0; k < cubeList.Count; k++)
+            {
+                //Á‰»‚³‚ê‚½—ñ‚æ‚èã‚É‚ ‚é—§•û‘Ì‚È‚ç
+                if (cubeList[k].transform.position.y > i)
+                {
+                    //Á‰»‚µ‚½‰ñ”‚¾‚¯—‰º‚³‚¹‚é
+                    cubeList[k].transform.DOMoveY(cubeList[k].transform.position.y - digestedCount, 0.5f);
+                }
+            }
         }
-
-
     }
 }

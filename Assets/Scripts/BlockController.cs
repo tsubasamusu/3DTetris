@@ -90,7 +90,7 @@ public class BlockController : MonoBehaviour
         }
 
         //自身が回転できない座標にいたら
-        if (Mathf.Abs(transform.position.x)>(5f-myBlockData.rotLength)||transform.position.y<(0.5f+myBlockData.rotLength))
+        if (Mathf.Abs(transform.position.x)>(5f-myBlockData.rotLength)||transform.position.y<(0.5f+myBlockData.rotLength)||!CheckLengthToOtherCube())
         {
             //TODO:SoundManagerから「ブッブー」という効果音を鳴らす処理を呼び出す
 
@@ -140,11 +140,28 @@ public class BlockController : MonoBehaviour
                 continue;
             }
 
-            //触れた相手が自分ではないなら
-            if(hit.transform!=transform)
+            //触れた相手が孫ではなかった回数
+            int isNotGrandchildCount = 0;
+
+            //自身の孫の数だけ繰り返す
+            for (int j = 0; j < transform.GetChild(0).transform.childCount; i++)
             {
-                //trueを返す
-                return true;
+                //触れた相手が自身の孫の1人なら
+                if (hit.transform.gameObject == transform.GetChild(0).transform.GetChild(j).gameObject)
+                {
+                    //次の繰り返し処理へ移る
+                    continue;
+                }
+
+                //回数を記録
+                isNotGrandchildCount++;
+
+                //触れた相手が自身の全ての孫以外なら
+                if (isNotGrandchildCount == transform.GetChild(0).transform.childCount)
+                {
+                    //trueを返す
+                    return true;
+                }
             }
         }
 
@@ -171,11 +188,28 @@ public class BlockController : MonoBehaviour
                 continue;
             }
 
-            //触れた相手が自分ではないなら
-            if (hit.transform != transform)
+            //触れた相手が孫ではなかった回数
+            int isNotGrandchildCount = 0;
+
+            //自身の孫の数だけ繰り返す
+            for (int j = 0; j < transform.GetChild(0).transform.childCount;i++)
             {
-                //trueを返す
-                return true;
+                //触れた相手が自身の孫の1人なら
+                if(hit.transform.gameObject== transform.GetChild(0).transform.GetChild(j).gameObject)
+                {
+                    //次の繰り返し処理へ移る
+                    continue;
+                }
+
+                //回数を記録
+                isNotGrandchildCount++;
+
+                //触れた相手が自身の全ての孫以外なら
+                if(isNotGrandchildCount== transform.GetChild(0).transform.childCount)
+                {
+                    //trueを返す
+                    return true;
+                }
             }
         }
 
@@ -206,5 +240,28 @@ public class BlockController : MonoBehaviour
 
         //座標を再設定
         transform.position = new Vector3(transform.position.x, transform.position.y + valueY, 0f);
+    }
+
+    /// <summary>
+    /// 他の立方体との距離を確認する
+    /// </summary>
+    /// <returns>他の立方体との距離を確認したうえで回転可能ならtrue</returns>
+    private bool CheckLengthToOtherCube()
+    {
+        //現在ステージに蓄積されている立方体の数だけ繰り返す
+        for(int i = 0; i < BlockManager.instance.cubeList.Count; i++)
+        {
+            //他の立方体とのx方向の距離が近すぎるかつ、
+            if(Mathf.Abs(BlockManager.instance.cubeList[i].transform.position.x-transform.position.x)<(myBlockData.rotLength+1)&&
+                //他の立方体とのy方向の距離が近すぎたら
+                Mathf.Abs(BlockManager.instance.cubeList[i].transform.position.y - transform.position.y)< (myBlockData.rotLength+1))
+            {
+                //falseを返す
+                return false;
+            }
+        }
+
+        //trueを返す
+        return true;
     }
 }

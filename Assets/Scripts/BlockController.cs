@@ -144,7 +144,7 @@ public class BlockController : MonoBehaviour
             int isNotGrandchildCount = 0;
 
             //自身の孫の数だけ繰り返す
-            for (int j = 0; j < transform.GetChild(0).transform.childCount; i++)
+            for (int j = 0; j < transform.GetChild(0).transform.childCount; j++)
             {
                 //触れた相手が自身の孫の1人なら
                 if (hit.transform.gameObject == transform.GetChild(0).transform.GetChild(j).gameObject)
@@ -192,10 +192,10 @@ public class BlockController : MonoBehaviour
             int isNotGrandchildCount = 0;
 
             //自身の孫の数だけ繰り返す
-            for (int j = 0; j < transform.GetChild(0).transform.childCount;i++)
+            for (int j = 0; j < transform.GetChild(0).transform.childCount; j++)
             {
                 //触れた相手が自身の孫の1人なら
-                if(hit.transform.gameObject== transform.GetChild(0).transform.GetChild(j).gameObject)
+                if (hit.transform.gameObject == transform.GetChild(0).transform.GetChild(j).gameObject)
                 {
                     //次の繰り返し処理へ移る
                     continue;
@@ -205,7 +205,7 @@ public class BlockController : MonoBehaviour
                 isNotGrandchildCount++;
 
                 //触れた相手が自身の全ての孫以外なら
-                if(isNotGrandchildCount== transform.GetChild(0).transform.childCount)
+                if (isNotGrandchildCount == transform.GetChild(0).transform.childCount)
                 {
                     //trueを返す
                     return true;

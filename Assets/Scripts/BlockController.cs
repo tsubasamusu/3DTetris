@@ -10,8 +10,6 @@ public class BlockController : MonoBehaviour
 
     private BlockDataSO.BlockData myBlockData;//自分のブロックのデータ
 
-    private bool isSideLimit;//ステージの端にいるかどうか
-
     /// <summary>
     /// 自身の生成開始直後に呼び出される
     /// </summary>
@@ -27,7 +25,7 @@ public class BlockController : MonoBehaviour
     private void Update()
     {
         //下方向の他のブロックに触れたら
-        if(CheckContactedDown())
+        if (CheckContactedDown())
         {
             //自身を適切な位置に移動させる
             SetMeRightPos();
@@ -43,17 +41,13 @@ public class BlockController : MonoBehaviour
         currentFallSpeed = Input.GetKey(KeyCode.DownArrow) ? GameData.instance.SpecialFallSpeed : GameData.instance.NormalFallSpeed;
 
         //右矢印が押されたら
-        if(Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.RightArrow))
         {
-            //ステージの端にいたら
-            if(CheckContactedSide())
+            //カメラから見て右にいて、他のコライダーに触れていたら
+            if ((mainCamera.transform.position.z < 0f && CheckContactedRight()) || (mainCamera.transform.position.z >= 0f && CheckContactedLeft()))
             {
-                //カメラから見て右にいたら
-                if (mainCamera.transform.position.z<0f&&transform.position.x>0f||mainCamera.transform.position.z>=0f&&transform.position.x<0f)
-                {
-                    //以降の処理を行わない
-                    return;
-                }
+                //以降の処理を行わない
+                return;
             }
 
             //カメラの位置に応じて移動方向を設定
@@ -63,34 +57,30 @@ public class BlockController : MonoBehaviour
             transform.Translate(new Vector3(moveValue, 0f, 0f));
         }
         //左矢印が押されたら
-        else if(Input.GetKeyDown(KeyCode.LeftArrow))
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
-            //ステージの端にいたら
-            if (CheckContactedSide())
+            //カメラから見て左にいて、他のコライダーに触れていたら
+            if ((mainCamera.transform.position.z < 0f && CheckContactedLeft()) || (mainCamera.transform.position.z >= 0f && CheckContactedRight()))
             {
-                //カメラから見て左にいたら
-                if (mainCamera.transform.position.z < 0f && transform.position.x < 0f || mainCamera.transform.position.z >= 0f && transform.position.x > 0f)
-                {
-                    //以降の処理を行わない
-                    return;
-                }
+                //以降の処理を行わない
+                return;
             }
 
             //カメラの位置に応じて移動方向を設定
             float moveValue = mainCamera.transform.position.z < 0f ? -1f : 1f;
 
             //カメラから見て左に移動する
-            transform.Translate(new Vector3(moveValue,0f,0f));
+            transform.Translate(new Vector3(moveValue, 0f, 0f));
         }
 
         //上矢印が押されたら
-        if(Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             //TODO:ホールド・使用する処理
         }
 
         //自身が回転できない座標にいたら
-        if (Mathf.Abs(transform.position.x)>(5f-myBlockData.rotLength)||transform.position.y<(0.5f+myBlockData.rotLength)||!CheckLengthToOtherCube())
+        if (Mathf.Abs(transform.position.x) > (5f - myBlockData.rotLength) || transform.position.y < (0.5f + myBlockData.rotLength) || !CheckLengthToOtherCube())
         {
             //TODO:SoundManagerから「ブッブー」という効果音を鳴らす処理を呼び出す
 
@@ -105,7 +95,7 @@ public class BlockController : MonoBehaviour
             float rotateValue = mainCamera.transform.position.z < 0 ? 90f : -90f;
 
             //カメラから見て反時計回りに回転させる
-            transform.GetChild(0).transform.eulerAngles = new Vector3(0f,0f, transform.GetChild(0).transform.eulerAngles.z+rotateValue);
+            transform.GetChild(0).transform.eulerAngles = new Vector3(0f, 0f, transform.GetChild(0).transform.eulerAngles.z + rotateValue);
         }
     }
 
@@ -119,22 +109,67 @@ public class BlockController : MonoBehaviour
     }
 
     /// <summary>
-    /// 横方向の他のブロックに接触したかどうか調べる
+    /// 正面から見て右方向の他のブロックに接触したかどうか調べる
     /// </summary>
-    /// <returns>横方向の他のブロックに接触したらtrue</returns>
-    private bool CheckContactedSide()
+    /// <returns>正面から見て右方向の他のブロックに接触したらtrue</returns>
+    private bool CheckContactedRight()
     {
         //自身の孫の数だけ繰り返す
         for (int i = 0; i < transform.GetChild(0).transform.childCount; i++)
         {
-            //光線の方向を設定
-            Vector3 direction = transform.GetChild(0).transform.GetChild(i).transform.position.x > 0f ? new Vector3(1f,0f,0f) : new Vector3(-1f,0f,0f);
-
             //孫からの光線を作成
-            Ray ray = new(transform.GetChild(0).transform.GetChild(i).transform.position, direction);
+            Ray ray = new(transform.GetChild(0).transform.GetChild(i).transform.position, new Vector3(1f, 0f, 0f));
 
             //光線が他のコライダーに接触しなかったら
             if (!Physics.Raycast(ray,out RaycastHit hit,0.5f))
+            {
+                //次の繰り返し処理へ移る
+                continue;
+            }
+
+            //触れた相手が孫ではなかった回数
+            int isNotGrandchildCount = 0;
+
+            //自身の孫の数だけ繰り返す
+            for (int j = 0; j < transform.GetChild(0).transform.childCount; j++)
+            {
+                //触れた相手が自身の孫の1人なら
+                if (hit.transform.gameObject == transform.GetChild(0).transform.GetChild(j).gameObject)
+                {
+                    //次の繰り返し処理へ移る
+                    continue;
+                }
+
+                //回数を記録
+                isNotGrandchildCount++;
+
+                //触れた相手が自身の全ての孫以外なら
+                if (isNotGrandchildCount == transform.GetChild(0).transform.childCount)
+                {
+                    //trueを返す
+                    return true;
+                }
+            }
+        }
+
+        //falseを返す
+        return false;
+    }
+
+    /// <summary>
+    /// 正面から見て左方向の他のブロックに接触したかどうか調べる
+    /// </summary>
+    /// <returns>正面から見て左方向の他のブロックに接触したらtrue</returns>
+    private bool CheckContactedLeft()
+    {
+        //自身の孫の数だけ繰り返す
+        for (int i = 0; i < transform.GetChild(0).transform.childCount; i++)
+        {
+            //孫からの光線を作成
+            Ray ray = new(transform.GetChild(0).transform.GetChild(i).transform.position, new Vector3(-1f, 0f, 0f));
+
+            //光線が他のコライダーに接触しなかったら
+            if (!Physics.Raycast(ray, out RaycastHit hit, 0.5f))
             {
                 //次の繰り返し処理へ移る
                 continue;

@@ -1275,6 +1275,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1eb225892cd029d43a908b158e546f1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  imgBackGround: {fileID: 1898289471}
+  imgLogo: {fileID: 1983885776}
+  imgHold: {fileID: 494690982}
+  txtScore: {fileID: 124462896}
+  txtTimeLimit: {fileID: 771434638}
+  imgNextBlocks:
+  - {fileID: 1796132620}
+  - {fileID: 872629864}
+  - {fileID: 1876917562}
+  logoDatas:
+  - logoType: 0
+    sprLogo: {fileID: 21300000, guid: 087f335be4e88f042862d05989e06d68, type: 3}
+  - logoType: 1
+    sprLogo: {fileID: 21300000, guid: 7da4b30466aefe74f89a7761482b0957, type: 3}
+  - logoType: 2
+    sprLogo: {fileID: 21300000, guid: ea2f11f21b25efb449e2687c8530b990, type: 3}
 --- !u!1 &949997679
 GameObject:
   m_ObjectHideFlags: 0

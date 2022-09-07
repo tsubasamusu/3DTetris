@@ -32,23 +32,27 @@ public class BlockGenerator : MonoBehaviour
     /// <summary>
     /// ブロックを生成する
     /// </summary>
+    /// <param name="blockData">生成したいブロックのデータ</param>
     /// <returns>生成したブロック</returns>
-    public GameObject GenerateBlock()
+    public GameObject GenerateBlock(BlockDataSO.BlockData blockData = null)
     {
+        //生成するブロックの元のデータを設定
+        BlockDataSO.BlockData originalData = blockData == null ? nextBlockDatas[0] : blockData;
+
         //ブロックを生成
-        GameObject generatedBlock= Instantiate(nextBlockDatas[0].prefab);
+        GameObject generatedBlock = Instantiate(originalData.prefab);
 
         //生成座標のx成分を設定
-        float x = nextBlockDatas[0].isEvenWidth ? 0f : 0.5f;
+        float x = originalData.isEvenWidth ? 0f : 0.5f;
 
         //生成したブロックの位置を設定
         generatedBlock.transform.position = new Vector3(x, 25f, 0f);
 
         //生成したブロックからBlockDetailを取得出来たら
-        if(generatedBlock.TryGetComponent(out BlockController blockController))
+        if (generatedBlock.TryGetComponent(out BlockController blockController))
         {
             //生成したブロックに、そのブロック自身の情報を渡す
-            blockController.SetUpBlock(nextBlockDatas[0]);
+            blockController.SetUpBlock(originalData);
         }
         //取得に失敗したら
         else

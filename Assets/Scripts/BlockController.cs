@@ -76,7 +76,8 @@ public class BlockController : MonoBehaviour
         //上矢印が押されたら
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-            //TODO:ホールド・使用する処理
+            //ブロックの保存・使用を行う
+            BlockManager.instance.HoldBlock(myBlockData);
         }
 
         //自身が回転できない座標にいたら
@@ -95,6 +96,15 @@ public class BlockController : MonoBehaviour
             float rotateValue = mainCamera.transform.position.z < 0 ? 90f : -90f;
 
             //カメラから見て反時計回りに回転させる
+            transform.GetChild(0).transform.eulerAngles = new Vector3(0f, 0f, transform.GetChild(0).transform.eulerAngles.z + rotateValue);
+        }
+        //右クリックされたら
+        else if(Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            //カメラの位置に応じて回転方向を設定
+            float rotateValue = mainCamera.transform.position.z < 0 ? -90f : 90f;
+
+            //カメラから見て時計回りに回転させる
             transform.GetChild(0).transform.eulerAngles = new Vector3(0f, 0f, transform.GetChild(0).transform.eulerAngles.z + rotateValue);
         }
     }

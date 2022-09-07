@@ -1,4 +1,3 @@
-using System.Collections;//IEnumeratorを使用
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;//DOTweenを使用
@@ -11,9 +10,17 @@ public class BlockManager : MonoBehaviour
     private BlockGenerator blockGenerator;//BlockGenerator
 
     //[HideInInspector]
-    public List<GameObject> cubeList=new List<GameObject>();//現在、ステージ上に蓄積されている立方体のリスト
+    public List<GameObject> cubeList=new();//現在、ステージ上に蓄積されている立方体のリスト
 
     private GameObject currentBlock;//現在アクティブなブロック
+
+    private BlockDataSO.BlockData holdBlockData;//保存されたブロックのデータ
+
+    /// <summary>
+    /// 保存されたブロックのデータの取得用
+    /// </summary>
+    public BlockDataSO.BlockData HoldBlockData
+    { get { return holdBlockData; } }
 
     /// <summary>
     /// 現在アクティブなブロックの設定用
@@ -122,6 +129,35 @@ public class BlockManager : MonoBehaviour
                     cubeList[k].transform.DOMoveY(cubeList[k].transform.position.y - digestedCount, 0.5f);
                 }
             }
+        }
+    }
+
+    /// <summary>
+    /// ブロックの保存・使用を行う
+    /// </summary>
+    /// <param name="blockData">呼び出し元のブロックのデータ</param>
+    public void HoldBlock(BlockDataSO.BlockData blockData)
+    {
+        //現在アクティブなブロックを消す
+        Destroy(currentBlock);
+
+        //保存されているブロックがなければ
+        if (holdBlockData == null)
+        {
+            //ブロックのデータを保存
+            holdBlockData = blockData;
+
+            //ブロックを1度生成し、生成したブロックの情報を取得
+            currentBlock = blockGenerator.GenerateBlock();
+        }
+        //保存されているブロックがあれば
+        else
+        {
+            //保存されているブロックを生成する
+            currentBlock = blockGenerator.GenerateBlock(holdBlockData);
+
+            //保存されているブロックのデータを空にする
+            holdBlockData = null;
         }
     }
 }

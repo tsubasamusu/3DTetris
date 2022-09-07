@@ -40,5 +40,5 @@ public class BlockDataSO : ScriptableObject
         public float rotLength;//回転可能な周囲のオブジェクトとの距離
     }
 
-    public List<BlockData> blockDataList = new List<BlockData>();//ブロックのデータのリスト
+    public List<BlockData> blockDataList = new();//ブロックのデータのリスト
 }

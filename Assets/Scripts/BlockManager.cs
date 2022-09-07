@@ -76,8 +76,11 @@ public class BlockManager : MonoBehaviour
     /// </summary>
     private void CheckDigested()
     {
+        //消化された列の数
+        int digestedColumnsCount = 0;
+
         //20回繰り返す
-        for(int i = 1; i < 21; i++)
+        for (int i = 1; i < 21; i++)
         {
             //同じy座標の立方体のリストを作成
             List<GameObject> samePosYList = cubeList.FindAll(x => (x.transform.position.y > (i - 0.5f)) && (x.transform.position.y < (i + 0.5f)));
@@ -89,15 +92,26 @@ public class BlockManager : MonoBehaviour
                 continue;
             }
 
+            //消化された列の数を記録する
+            digestedColumnsCount++;
+
             //10回繰り返す
             for(int j = 0; j < 10; j++)
             {
-                //対象の立方体を一定時間後に消す
-                Destroy(cubeList.FindAll(x => (x.transform.position.y > (i - 0.5f)) && (x.transform.position.y < (i + 0.5f)))[j],0.25f);
+                //対象の立方体を取得
+                GameObject cube = samePosYList[0];
 
-                //対象の立方体をリストから取り除く
-                cubeList.Remove(cubeList.Find(x => (x.transform.position.y > (i - 0.5f)) && (x.transform.position.y < (i + 0.5f))));
+                //対象の立方体をcubeListから取り除く
+                cubeList.Remove(cubeList.Find(x => x == cube));
+
+                //対象の立方体をsamePosYListから取り除く
+                samePosYList.RemoveAt(0);
+
+                //対象の立方体を消す
+                Destroy(cube);
             }
         }
+
+
     }
 }

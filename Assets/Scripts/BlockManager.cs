@@ -158,6 +158,9 @@ public class BlockManager : MonoBehaviour
     /// <param name="blockData">呼び出し元のブロックのデータ</param>
     public void HoldBlock(BlockDataSO.BlockData blockData)
     {
+        //保存されているブロックの表示を設定
+        UIManager.instance.SetImgHoldBllock(blockData.sprite);
+
         //現在アクティブなブロックを消す
         Destroy(currentBlock);
 

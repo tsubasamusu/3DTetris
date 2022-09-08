@@ -70,6 +70,9 @@ public class BlockGenerator : MonoBehaviour
         //生成予定のブロックのデータを更新する
         UpdateNextBlockDatas();
 
+        //生成予定のブロックの表示を設定
+        UIManager.instance.SetImgNextBlocks(nextBlockDatas);
+
         //生成したブロックを返す
         return generatedBlock;
     }

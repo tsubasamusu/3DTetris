@@ -473,7 +473,7 @@ RectTransform:
   - {fileID: 1028339131}
   - {fileID: 918995866}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1595,7 +1595,7 @@ Transform:
   - {fileID: 1188378070}
   - {fileID: 1474400868}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &963194225
 GameObject:
@@ -2181,7 +2181,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalFallSpeed: 0.05
   specialFallSpeed: 0.25
-  timeLimit: 10
+  timeLimit: 180
   appointmentsNumber: 3
   scorePerColumn: 10
 --- !u!4 &1080068403

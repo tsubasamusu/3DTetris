@@ -349,6 +349,9 @@ public class UIManager : MonoBehaviour
     {
         //保存されているブロックのスプライトを設定
         imgHold.sprite = blockSprite;
+
+        //保存したブロックのイメージを表示
+        imgHold.DOFade(0f, 0.25f).OnComplete(() => imgHold.DOFade(1f, 0.25f));
     }
 
     /// <summary>
@@ -362,6 +365,9 @@ public class UIManager : MonoBehaviour
         {
             //生成予定のブロックのイメージのスプライトを設定
             imgNextBlocks[i].sprite = blockDatas[i].sprite;
+
+            //生成予定のブロックのイメージを表示
+            imgNextBlocks[i].DOFade(1f, 0f);
         }
     }
 

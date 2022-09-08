@@ -6,8 +6,6 @@ public class GameData : MonoBehaviour
 {
     public static GameData instance;//インスタンス
 
-    private int score;//得点
-
     [SerializeField]
     private float normalFallSpeed;//ブロックの降下速度（普通）
 
@@ -20,11 +18,8 @@ public class GameData : MonoBehaviour
     [SerializeField, Header("ブロックの生成予定の数")]
     private int appointmentsNumber;//ブロックの生成予定の数
 
-    /// <summary>
-    /// 得点取得用
-    /// </summary>
-    public int Score
-    { get { return score; } }
+    [SerializeField,Header("1列あたりの得点")]
+    private int scorePerColumn;//1列あたりの得点
 
     /// <summary>
     /// ブロックの降下速度（普通）取得用
@@ -49,6 +44,12 @@ public class GameData : MonoBehaviour
     /// </summary>
     public int AppointmentsNumber
     { get { return appointmentsNumber; } }
+
+    /// <summary>
+    /// 「1列あたりの得点」取得用
+    /// </summary>
+    public int ScorePerColumn
+    { get { return scorePerColumn; } }
 
     /// <summary>
     /// Startメソッドより前に呼び出される

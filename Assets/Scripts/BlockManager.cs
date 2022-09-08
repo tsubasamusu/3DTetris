@@ -9,7 +9,7 @@ public class BlockManager : MonoBehaviour
     [SerializeField]
     private BlockGenerator blockGenerator;//BlockGenerator
 
-    //[HideInInspector]
+    [HideInInspector]
     public List<GameObject> cubeList=new();//現在、ステージ上に蓄積されている立方体のリスト
 
     private GameObject currentBlock;//現在アクティブなブロック
@@ -108,6 +108,9 @@ public class BlockManager : MonoBehaviour
                 //次の繰り返し処理へ移る
                 continue;
             }
+
+            //得点の表示を更新
+            UIManager.instance.UpdateTxtScore(GameData.instance.ScorePerColumn);
 
             //10回繰り返す
             for(int j = 0; j < 10; j++)

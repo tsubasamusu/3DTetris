@@ -24,9 +24,6 @@ public class BlockGenerator : MonoBehaviour
             //生成予定のブロックのデータの配列の各要素にランダムなデータを入れる
             nextBlockDatas[i] = blockDataSO.blockDataList[Random.Range(0, blockDataSO.blockDataList.Count)];
         }
-
-        //（仮）
-        BlockManager.instance.CurrentBlock= GenerateBlock();
     }
 
     /// <summary>

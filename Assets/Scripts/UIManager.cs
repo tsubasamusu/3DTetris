@@ -60,6 +60,8 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private List<LogoData> logoDatasList=new();//ロゴのデータのリスト
 
+    private int score;//得点
+
     /// <summary>
     /// Startメソッドより前に呼び出される
     /// </summary>
@@ -290,11 +292,14 @@ public class UIManager : MonoBehaviour
     }
 
     /// <summary>
-    /// 得点の表示を設定する
+    /// 得点の表示を更新する
     /// </summary>
-    /// <param name="score">得点</param>
-    public void SetTxtScore(int score)
+    /// <param name="updateValue">得点の更新量</param>
+    public void UpdateTxtScore(int updateValue)
     {
+        //得点の記録を更新
+        score += updateValue;
+
         //得点のテキストを設定
         txtScore.text = score.ToString();
     }

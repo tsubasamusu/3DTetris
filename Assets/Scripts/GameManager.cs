@@ -19,8 +19,8 @@ public class GameManager : MonoBehaviour
         //ゲームスタート演出が終わるまで待つ
         yield return UIManager.instance.PlayGameStart();
 
-        //UIの初期設定を行う
-        UIManager.instance.SetUpUI();
+        //イメージの向きの確認の準備を行う
+        UIManager.instance.PrepareCheck();
 
         //ブロックを生成し、生成したブロックをBlockManagerに渡す
         BlockManager.instance.CurrentBlock = blockGenerator.GenerateBlock();

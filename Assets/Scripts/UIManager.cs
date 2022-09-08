@@ -327,11 +327,31 @@ public class UIManager : MonoBehaviour
     /// <param name="updateValue">得点の更新量</param>
     public void UpdateTxtScore(int updateValue)
     {
-        //得点の記録を更新
-        score += updateValue;
+        //アニメーション終了判定用
+        bool end = false;
 
-        //得点のテキストを設定
-        txtScore.text = score.ToString();
+        //得点の表示の更新を開始する
+        StartCoroutine(UpdateTxtScore());
+
+        //得点の記録を更新
+        DOTween.To(() => score,(x) => score = x,score+updateValue,0.5f).OnComplete(()=>
+        
+        //アニメーション終了状態に切り替える
+        end=true);
+
+        //得点の表示を更新する
+        IEnumerator UpdateTxtScore()
+        {
+            //アニメーションが終了するまで繰り返す
+            while (!end)
+            {
+                //得点のテキストを設定
+                txtScore.text = score.ToString();
+
+                //次のフレームへ飛ばす（実質、Updateメソッド）
+                yield return null;
+            }
+        }
     }
 
     /// <summary>
@@ -354,7 +374,7 @@ public class UIManager : MonoBehaviour
         imgHold.sprite = blockSprite;
 
         //保存したブロックのイメージを表示
-        imgHold.DOFade(0f, 0.25f).OnComplete(() => imgHold.DOFade(1f, 0.25f));
+        imgHold.DOFade(0f, 0f).OnComplete(() => imgHold.DOFade(1f, 0.5f));
     }
 
     /// <summary>
@@ -386,19 +406,19 @@ public class UIManager : MonoBehaviour
     }
 
     /// <summary>
-    /// UIの初期設定を行う
+    /// イメージの向きの確認の準備を行う
     /// </summary>
-    public void SetUpUI()
+    public void PrepareCheck()
     {
-        //生成予定のブロックのイメージの向きが正しいか確認を開始する
-        StartCoroutine(CheckBlockImagesDirection());
+        //イメージの向きが正しいか確認を開始する
+        StartCoroutine(CheckImagesDirection());
     }
 
     /// <summary>
-    /// 生成予定のブロックのイメージの向きが正しいか確認する
+    /// イメージの向きが正しいか確認する
     /// </summary>
     /// <returns>待ち時間</returns>
-    private IEnumerator CheckBlockImagesDirection()
+    private IEnumerator CheckImagesDirection()
     {
         //無限に繰り返す
         while (true)
@@ -406,8 +426,11 @@ public class UIManager : MonoBehaviour
             //適切な角度を取得
             float angleY = cameraTran.position.z < 0f ? 0f : 180f;
 
+            //角度を設定
+            imgHold.transform.eulerAngles= new Vector3(0f, angleY, 0f);
+
             //生成予定のブロックの数だけ繰り返す
-            for(int i = 0; i < imgNextBlocks.Length; i++)
+            for (int i = 0; i < imgNextBlocks.Length; i++)
             {
                 //角度を設定
                 imgNextBlocks[i].transform.eulerAngles=new Vector3(0f, angleY, 0f);
@@ -416,5 +439,17 @@ public class UIManager : MonoBehaviour
             //次のフレームへ飛ばす（実質、Updateメソッド）
             yield return null;
         }
+    }
+
+    /// <summary>
+    /// 保存されているブロックのイメージを空にする
+    /// </summary>
+    public void ClearImgHoldBlock()
+    {
+        //保存されているブロックを非表示にする
+        imgHold.DOFade(0f, 0f);
+
+        //スプライトをnullにする
+        imgHold.sprite = null;
     }
 }

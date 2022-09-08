@@ -96,6 +96,9 @@ public class UIManager : MonoBehaviour
         //ボタン判定用
         bool clicked = false;
 
+        //不要なUIを非表示にする
+        canvasGroup.alpha = 0f;
+
         //ボタンを非活性化
         button.interactable = false;
 
@@ -149,6 +152,9 @@ public class UIManager : MonoBehaviour
 
         //演出が終わるまで待つ
         yield return new WaitUntil(() => end == true);
+
+        //UIを表示する
+        canvasGroup.alpha = 1f;
 
         //ボタンが押された際の処理
         void ClickedButton()
@@ -361,7 +367,7 @@ public class UIManager : MonoBehaviour
     public void SetTxtTimeLimit(float remainingTime)
     {
         //制限時間の表示を残り時間に設定
-        txtTimeLimit.text = remainingTime.ToString("F2");
+        txtTimeLimit.text = remainingTime.ToString("F1");
     }
 
     /// <summary>

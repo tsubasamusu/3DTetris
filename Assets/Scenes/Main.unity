@@ -2182,7 +2182,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalFallSpeed: 0.05
   specialFallSpeed: 0.25
-  timeLimit: 20
+  timeLimit: 180
   appointmentsNumber: 3
   scorePerColumn: 10
 --- !u!4 &1080068403

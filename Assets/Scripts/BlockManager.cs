@@ -117,9 +117,6 @@ public class BlockManager : MonoBehaviour
                 continue;
             }
 
-            //得点の表示を更新
-            UIManager.instance.UpdateTxtScore(GameData.instance.ScorePerColumn);
-
             //10回繰り返す
             for(int j = 0; j < 10; j++)
             {
@@ -150,6 +147,9 @@ public class BlockManager : MonoBehaviour
                 }
             }
         }
+
+        //得点の表示を更新
+        UIManager.instance.UpdateTxtScore(GameData.instance.ScorePerColumn*digestedCount);
     }
 
     /// <summary>

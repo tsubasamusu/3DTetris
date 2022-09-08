@@ -9,6 +9,9 @@ public class BlockManager : MonoBehaviour
     [SerializeField]
     private BlockGenerator blockGenerator;//BlockGenerator
 
+    [SerializeField]
+    private GameManager gameManager;//GameManager
+
     [HideInInspector]
     public List<GameObject> cubeList=new();//現在、ステージ上に蓄積されている立方体のリスト
 
@@ -72,6 +75,20 @@ public class BlockManager : MonoBehaviour
             Debug.Log("現在アクティブなブロックからのBlockControllerの取得に失敗");
         }
 
+        //ステージに蓄積されている立方体の数だけ繰り返す
+        for (int j = 0; j < cubeList.Count; j++)
+        {
+            //その立方体が限界ラインを超えていたら
+            if (cubeList[j].transform.position.y > 20.5f)
+            {
+                //ゲームオーバー処理の準備を行う
+                gameManager.PrepareGameOver();
+
+                //以降の処理を行わない
+                return;
+            }
+        }
+
         //立方体の消化を行うか確認する
         CheckDigested();
 
@@ -90,15 +107,6 @@ public class BlockManager : MonoBehaviour
         //20回繰り返す
         for (int i = 1; i < 21; i++)
         {
-            //ステージ上に蓄積されている立方体の1つでも限界ラインを超えていたら
-            if (cubeList[i].transform.position.y>20.5f)
-            {
-                //TODO:GameManagerからゲームオーバー処理を呼び出す
-
-                //以降の処理を行わない
-                return;
-            }
-
             //同じy座標の立方体のリストを作成
             List<GameObject> samePosYList = cubeList.FindAll(x => (x.transform.position.y > (i - 0.5f)) && (x.transform.position.y < (i + 0.5f)));
             

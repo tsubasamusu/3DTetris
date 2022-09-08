@@ -55,7 +55,10 @@ public class UIManager : MonoBehaviour
     private Transform resultTran;//結果表示位置
 
     [SerializeField]
-    private Image[] imgNextBlocks;//次のブロックの配列
+    private CanvasGroup canvasGroup;//CanvasGroup
+
+    [SerializeField]
+    private Image[] imgNextBlocks;//次のブロックのイメージの配列
 
     [SerializeField]
     private List<LogoData> logoDatasList=new();//ロゴのデータのリスト
@@ -98,6 +101,9 @@ public class UIManager : MonoBehaviour
 
         //ボタンを青色に設定
         imgButton.color = Color.blue;
+
+        //ボタンのテキストを空にする
+        txtButton.text = string.Empty;
 
         //背景を表示
         imgBackGround.DOFade(1f, 0f);
@@ -164,8 +170,17 @@ public class UIManager : MonoBehaviour
         //ボタン判定用
         bool clicked = false;
 
+        //不要なUIを非表示にする
+        canvasGroup.alpha = 0f;
+
+        //得点を非表示にする
+        txtScore.DOFade(0f, 0f);
+
         //背景を黒色に設定
         imgBackGround.color = Color.black;
+
+        //ボタンのテキストを空にする
+        txtButton.text=string.Empty;
 
         //ロゴを「GameOver」に設定
         imgLogo.sprite = GetLogoSprite(LogoType.GameOver);
@@ -182,11 +197,14 @@ public class UIManager : MonoBehaviour
         //ロゴを表示
         imgLogo.DOFade(1f, 1f);
 
-        //ボタンを表示
-        imgButton.DOFade(1f, 1f);
+        //ボタンのテキストを可視化
+        txtButton.DOFade(1f,0f).OnComplete(() =>
 
         //ボタンのテキストを設定し、表示
-        txtButton.DOText("Restart", 1f).OnComplete(() =>
+        txtButton.DOText("Restart", 1f));
+
+        //ボタンを表示
+        imgButton.DOFade(1f, 1f).OnComplete(() =>
 
         //ボタンを活性化
         button.interactable = true);
@@ -232,8 +250,14 @@ public class UIManager : MonoBehaviour
         //ボタン判定用
         bool clicked = false;
 
+        //不要なUIを非表示にする
+        canvasGroup.alpha = 0f;
+
         //背景を白色に設定
         imgBackGround.color = Color.white;
+
+        //ボタンのテキストを空にする
+        txtButton.text = string.Empty;
 
         //ロゴを「GameClear」に設定
         imgLogo.sprite = GetLogoSprite(LogoType.GameClear);
@@ -253,11 +277,14 @@ public class UIManager : MonoBehaviour
         //ボタンを表示
         imgButton.DOFade(1f, 1f);
 
-        //得点を結果表示位置に移動させる
-        txtScore.transform.DOMove(resultTran.position, 1f);
+        //ボタンのテキストを可視化
+        txtButton.DOFade(1f,0f).OnComplete(()=>
 
         //ボタンのテキストを設定し、表示
-        txtButton.DOText("Restart", 1f).OnComplete(() =>
+        txtButton.DOText("Restart", 1f));
+
+        //得点を結果表示位置に移動させる
+        txtScore.transform.DOMove(resultTran.position, 1f).OnComplete(() =>
 
         //ボタンを活性化
         button.interactable = true);

@@ -76,14 +76,6 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    //（仮）
-    private IEnumerator Start()
-    {
-        yield return PlayGameClear();
-
-        Debug.Log("END");
-    }
-
     /// <summary>
     /// ゲームスタート演出を行う
     /// </summary>

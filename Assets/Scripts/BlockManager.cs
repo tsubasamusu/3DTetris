@@ -90,6 +90,15 @@ public class BlockManager : MonoBehaviour
         //20回繰り返す
         for (int i = 1; i < 21; i++)
         {
+            //ステージ上に蓄積されている立方体の1つでも限界ラインを超えていたら
+            if (cubeList[i].transform.position.y>20.5f)
+            {
+                //TODO:GameManagerからゲームオーバー処理を呼び出す
+
+                //以降の処理を行わない
+                return;
+            }
+
             //同じy座標の立方体のリストを作成
             List<GameObject> samePosYList = cubeList.FindAll(x => (x.transform.position.y > (i - 0.5f)) && (x.transform.position.y < (i + 0.5f)));
             

@@ -19,6 +19,9 @@ public class GameManager : MonoBehaviour
         //ゲームスタート演出が終わるまで待つ
         yield return UIManager.instance.PlayGameStart();
 
+        //マウスカーソルを非表示にする
+        Cursor.visible = false;
+
         //イメージの向きの確認の準備を行う
         UIManager.instance.PrepareCheck();
 
@@ -139,5 +142,8 @@ public class GameManager : MonoBehaviour
 
         //現在アクティブなブロックを消す
         Destroy(BlockManager.instance.CurrentBlock);
+
+        //マウスカーソルを表示する
+        Cursor.visible = true;
     }
 }

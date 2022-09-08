@@ -37,16 +37,19 @@ public class UIManager : MonoBehaviour
     private Image imgHold;//保存されたブロック
 
     [SerializeField]
+    private Image imgButton;//ボタンのイメージ
+
+    [SerializeField]
     private Text txtScore;//得点
 
     [SerializeField]
     private Text txtTimeLimit;//制限時間
 
     [SerializeField]
-    private Text txtGameStart;//ゲームスタートテキスト
+    private Text txtButton;//ボタンのテキスト
 
     [SerializeField]
-    private Button btnGameStart;//ゲームスタートボタン
+    private Button button;//ボタン
 
     [SerializeField]
     private Image[] imgNextBlocks;//次のブロックの配列
@@ -73,7 +76,7 @@ public class UIManager : MonoBehaviour
     //（仮）
     private IEnumerator Start()
     {
-        yield return PlayGameStart();
+        yield return PlayGameOver();
 
         Debug.Log("END");
     }
@@ -87,14 +90,17 @@ public class UIManager : MonoBehaviour
         //演出終了判定用
         bool end = false;
 
-        //ゲームスタートボタン判定用
+        //ボタン判定用
         bool clicked = false;
 
-        //ゲームスタートボタンを非活性化
-        btnGameStart.interactable = false;
+        //ボタンを非活性化
+        button.interactable = false;
 
         //背景を白色に設定
         imgBackGround.color = Color.white;
+
+        //ボタンを青色に設定
+        imgButton.color = Color.blue;
 
         //背景を表示
         imgBackGround.DOFade(1f, 0f);
@@ -102,32 +108,22 @@ public class UIManager : MonoBehaviour
         //ロゴをタイトルに設定
         imgLogo.sprite = GetLogoSprite(LogoType.Title);
 
-        //ゲームスタートボタンからのイメージの取得に成功したら
-        if (btnGameStart.TryGetComponent(out Image imgGameStart))
-        {
-            //ゲームスタートボタンを表示
-            imgGameStart.DOFade(1f, 1f);
-        }
-        //ゲームスタートボタンからのイメージの取得に失敗したら
-        else
-        {
-            //問題を報告
-            Debug.Log("ゲームスタートボタンからのイメージの取得に失敗");
-        }
+        //ボタンを表示
+        imgButton.DOFade(1f, 1f);
 
         //ロゴを表示する
         imgLogo.DOFade(1f, 1f);
 
-        //ゲームスタートボタンのテキストを表示
-        txtGameStart.DOText("Game Start", 1f).OnComplete(() =>
+        //ボタンのテキストを設定し表示
+        txtButton.DOText("Game Start", 1f).OnComplete(() =>
 
-        //ゲームスタートボタンを活性化
-        btnGameStart.interactable = true);
+        //ボタンを活性化
+        button.interactable = true);
 
-        //ゲームスタートボタンが押された際の処理を登録
-        btnGameStart.onClick.AddListener(() => ClickedBtnGameStart());
+        //ボタンが押された際の処理を登録
+        button.onClick.AddListener(() => ClickedButton());
 
-        //ゲームスタートボタンが押されるまで待つ
+        //ボタンが押されるまで待つ
         yield return new WaitUntil(() => clicked == true);
 
         //背景を非表示にする
@@ -136,26 +132,162 @@ public class UIManager : MonoBehaviour
         //ロゴを非表示にする
         imgLogo.DOFade(0f, 1f);
 
-        //ゲームスタートボタンのイメージを非表示にする
-        imgGameStart.DOFade(0f, 1f);
+        //ボタンのイメージを非表示にする
+        imgButton.DOFade(0f, 1f);
 
-        //ゲームスタートボタンのテキストを非表示にする
-        txtGameStart.DOFade(0f, 1f).OnComplete(() =>
+        //ボタンのテキストを非表示にする
+        txtButton.DOFade(0f, 1f).OnComplete(() =>
 
-            //演出が終わった状態に切り替える
-            end = true);
+        //演出が終わった状態に切り替える
+        end = true);
 
         //演出が終わるまで待つ
         yield return new WaitUntil(() => end == true);
 
-        //ゲームスタートボタンが押された際の処理
-        void ClickedBtnGameStart()
+        //ボタンが押された際の処理
+        void ClickedButton()
         {
-            //ゲームスタートボタンが押された状態に切り替える
+            //ボタンが押された状態に切り替える
             clicked = true;
 
-            //ゲームスタートボタンを非活性化
-            btnGameStart.interactable = false;
+            //ボタンを非活性化
+            button.interactable = false;
+        }
+    }
+
+    /// <summary>
+    /// ゲームオーバー演出を行う
+    /// </summary>
+    /// <returns>待ち時間</returns>
+    public IEnumerator PlayGameOver()
+    {
+        //演出終了判定用
+        bool end = false;
+
+        //ボタン判定用
+        bool clicked = false;
+
+        //背景を黒色に設定
+        imgBackGround.color = Color.black;
+
+        //ロゴを「GameOver」に設定
+        imgLogo.sprite = GetLogoSprite(LogoType.GameOver);
+
+        ///ボタンの色を赤色に設定
+        imgButton.color = Color.red;
+
+        ///ボタンが押された際の処理を登録
+        button.onClick.AddListener(() => ClickedButton());
+
+        //背景を表示
+        imgBackGround.DOFade(1f, 1f);
+
+        //ロゴを表示
+        imgLogo.DOFade(1f, 1f);
+
+        //ボタンを表示
+        imgButton.DOFade(1f, 1f);
+
+        //ボタンのテキストを設定し、表示
+        txtButton.DOText("Restart", 1f).OnComplete(() =>
+
+        //ボタンを活性化
+        button.interactable = true);
+
+        //ボタンが押されるまで待つ
+        yield return new WaitUntil(() => clicked == true);
+
+        //背景を白色に変更
+        imgBackGround.DOColor(Color.white, 1f);
+
+        //ロゴを非表示にする
+        imgLogo.DOFade(0f, 1f);
+
+        //ボタンのイメージを非表示にする
+        imgButton.DOFade(0f, 1f);
+
+        //ボタンのテキストを非表示にする
+        txtButton.DOFade(0f, 1f).OnComplete(() =>
+
+        //演出が終わった状態に切り替える
+        end = true);
+
+        //演出が終わるまで待つ
+        yield return new WaitUntil(() => end == true);
+
+        //ボタンが押された際の処理
+        void ClickedButton()
+        {
+            //ボタンが押された状態に切り替える
+            clicked = true;
+        }
+    }
+
+    /// <summary>
+    /// ゲームクリア演出を行う
+    /// </summary>
+    /// <returns>待ち時間</returns>
+    public IEnumerator PlayGameClear()
+    {
+        //演出終了判定用
+        bool end = false;
+
+        //ボタン判定用
+        bool clicked = false;
+
+        //背景を白色に設定
+        imgBackGround.color = Color.white;
+
+        //ロゴを「GameClear」に設定
+        imgLogo.sprite = GetLogoSprite(LogoType.GameClear);
+
+        ///ボタンの色を黄色に設定
+        imgButton.color = Color.yellow;
+
+        ///ボタンが押された際の処理を登録
+        button.onClick.AddListener(() => ClickedButton());
+
+        //背景を表示
+        imgBackGround.DOFade(1f, 1f);
+
+        //ロゴを表示
+        imgLogo.DOFade(1f, 1f);
+
+        //ボタンを表示
+        imgButton.DOFade(1f, 1f);
+
+        //ボタンのテキストを設定し、表示
+        txtButton.DOText("Restart", 1f).OnComplete(() =>
+
+        //ボタンを活性化
+        button.interactable = true);
+
+        //ボタンが押されるまで待つ
+        yield return new WaitUntil(() => clicked == true);
+
+        //背景を白色に変更
+        imgBackGround.DOColor(Color.white, 1f);
+
+        //ロゴを非表示にする
+        imgLogo.DOFade(0f, 1f);
+
+        //ボタンのイメージを非表示にする
+        imgButton.DOFade(0f, 1f);
+
+        //ボタンのテキストを非表示にする
+        txtButton.DOFade(0f, 1f).OnComplete(() =>
+
+        //演出が終わった状態に切り替える
+        end = true);
+
+        //演出が終わるまで待つ
+        yield return new WaitUntil(() => end == true);
+
+        //ボタンが押された際の処理
+        void ClickedButton()
+        {
+            //ボタンが押された状態に切り替える
+            clicked = true;
         }
     }
 

@@ -338,7 +338,7 @@ public class UIManager : MonoBehaviour
     public void SetTxtTimeLimit(float remainingTime)
     {
         //§ŒÀŠÔ‚Ì•\¦‚ğc‚èŠÔ‚Éİ’è
-        txtTimeLimit.text = remainingTime.ToString();
+        txtTimeLimit.text = remainingTime.ToString("F2");
     }
 
     /// <summary>

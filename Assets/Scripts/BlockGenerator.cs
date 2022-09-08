@@ -10,6 +10,8 @@ public class BlockGenerator : MonoBehaviour
     [HideInInspector]
     public BlockDataSO.BlockData[] nextBlockDatas;//生成予定のブロックのデータの配列
 
+    private bool stop;//ブロックの生成停止判定用
+
     /// <summary>
     /// ゲーム開始直後に呼び出される
     /// </summary>
@@ -33,6 +35,13 @@ public class BlockGenerator : MonoBehaviour
     /// <returns>生成したブロック</returns>
     public GameObject GenerateBlock(BlockDataSO.BlockData blockData = null)
     {
+        //ブロックの生成停止命令が出ていたら
+        if(stop)
+        {
+            //以降の処理を行わない
+            return null;
+        }
+
         //生成するブロックの元のデータを設定
         BlockDataSO.BlockData originalData = blockData == null ? nextBlockDatas[0] : blockData;
 
@@ -86,5 +95,14 @@ public class BlockGenerator : MonoBehaviour
             //データを1つ手前にずらす
             nextBlockDatas[i] = nextBlockDatas[i + 1];
         }
+    }
+
+    /// <summary>
+    /// ブロックの生成を止める
+    /// </summary>
+    public void StopGenerateBlock()
+    {
+        //ブロックの生成を停止する
+        stop = true;
     }
 }

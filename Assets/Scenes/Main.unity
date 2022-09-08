@@ -1363,6 +1363,7 @@ MonoBehaviour:
   txtTimeLimit: {fileID: 771434638}
   txtButton: {fileID: 474453815}
   button: {fileID: 1028339132}
+  resultTran: {fileID: 918995866}
   imgNextBlocks:
   - {fileID: 1796132620}
   - {fileID: 872629864}
@@ -1374,6 +1375,42 @@ MonoBehaviour:
     sprLogo: {fileID: 21300000, guid: 7da4b30466aefe74f89a7761482b0957, type: 3}
   - logoType: 2
     sprLogo: {fileID: 21300000, guid: ea2f11f21b25efb449e2687c8530b990, type: 3}
+--- !u!1 &918995865
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 918995866}
+  m_Layer: 5
+  m_Name: ResultTran
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &918995866
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 918995865}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1205763492}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -200}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &949997679
 GameObject:
   m_ObjectHideFlags: 0
@@ -2155,6 +2192,7 @@ RectTransform:
   - {fileID: 872629863}
   - {fileID: 1876917561}
   - {fileID: 1028339131}
+  - {fileID: 918995866}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -52,6 +52,9 @@ public class UIManager : MonoBehaviour
     private Button button;//ボタン
 
     [SerializeField]
+    private Transform resultTran;//結果表示位置
+
+    [SerializeField]
     private Image[] imgNextBlocks;//次のブロックの配列
 
     [SerializeField]
@@ -76,7 +79,7 @@ public class UIManager : MonoBehaviour
     //（仮）
     private IEnumerator Start()
     {
-        yield return PlayGameOver();
+        yield return PlayGameClear();
 
         Debug.Log("END");
     }
@@ -256,6 +259,9 @@ public class UIManager : MonoBehaviour
         //ボタンを表示
         imgButton.DOFade(1f, 1f);
 
+        //得点を結果表示位置に移動させる
+        txtScore.transform.DOMove(resultTran.position, 1f);
+
         //ボタンのテキストを設定し、表示
         txtButton.DOText("Restart", 1f).OnComplete(() =>
 
@@ -265,14 +271,14 @@ public class UIManager : MonoBehaviour
         //ボタンが押されるまで待つ
         yield return new WaitUntil(() => clicked == true);
 
-        //背景を白色に変更
-        imgBackGround.DOColor(Color.white, 1f);
-
         //ロゴを非表示にする
         imgLogo.DOFade(0f, 1f);
 
         //ボタンのイメージを非表示にする
         imgButton.DOFade(0f, 1f);
+
+        //得点を非表示にする
+        txtScore.DOFade(0f, 1f);
 
         //ボタンのテキストを非表示にする
         txtButton.DOFade(0f, 1f).OnComplete(() =>
@@ -288,6 +294,50 @@ public class UIManager : MonoBehaviour
         {
             //ボタンが押された状態に切り替える
             clicked = true;
+        }
+    }
+
+    /// <summary>
+    /// 得点の表示を設定する
+    /// </summary>
+    /// <param name="score">得点</param>
+    public void SetTxtScore(int score)
+    {
+        //得点のテキストを設定
+        txtScore.text = score.ToString();
+    }
+
+    /// <summary>
+    /// 制限時間の表示を設定する
+    /// </summary>
+    /// <param name="remainingTime">残り時間</param>
+    public void SetTxtTimeLimit(float remainingTime)
+    {
+        //制限時間の表示を残り時間に設定
+        txtTimeLimit.text = remainingTime.ToString();
+    }
+
+    /// <summary>
+    /// 保存されているブロックの表示を設定する
+    /// </summary>
+    /// <param name="blockSprite">ブロックのスプライト</param>
+    public void SetImgHoldBllock(Sprite blockSprite)
+    {
+        //保存されているブロックのスプライトを設定
+        imgHold.sprite = blockSprite;
+    }
+
+    /// <summary>
+    /// 生成予定のブロックの表示を設定する
+    /// </summary>
+    /// <param name="blockDatas">生成予定のブロックのデータのリスト</param>
+    public void SetImgNextBlocks(BlockDataSO.BlockData[] blockDatas)
+    {
+        //用意してあるUIの数だけ繰り返す
+        for (int i = 0; i < imgNextBlocks.Length; i++)
+        {
+            //生成予定のブロックのイメージのスプライトを設定
+            imgNextBlocks[i].sprite = blockDatas[i].sprite;
         }
     }
 

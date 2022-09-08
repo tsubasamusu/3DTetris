@@ -452,4 +452,14 @@ public class UIManager : MonoBehaviour
         //スプライトをnullにする
         imgHold.sprite = null;
     }
+
+    /// <summary>
+    /// 制限時間のテキストの色を設定する
+    /// </summary>
+    /// <param name="color">色</param>
+    public void SetTxtTimeLimitColor(Color color)
+    {
+        ///制限時間のテキストの色を設定
+        txtTimeLimit.color = color;
+    }
 }

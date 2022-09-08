@@ -38,6 +38,9 @@ public class GameManager : MonoBehaviour
     /// <returns>待ち時間</returns>
     private IEnumerator ReduceTimeLimit()
     {
+        //テキストの色を変更したかの判定用
+        bool changedColor = false;
+
         //制限時間の初期値を取得
         float timeLimit = GameData.instance.TimeLimit;
 
@@ -59,6 +62,16 @@ public class GameManager : MonoBehaviour
 
                 //繰り返し処理を終わる
                 break;
+            }
+
+            //制限時間が10秒を切ったら
+            if (timeLimit < 10f && !changedColor)
+            {
+                //制限時間のテキストの色を変える
+                UIManager.instance.SetTxtTimeLimitColor(Color.red);
+
+                //テキストの色を変更した状態に切り替える
+                changedColor = true;
             }
 
             //制限時間を減らしていく

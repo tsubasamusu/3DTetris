@@ -26,10 +26,10 @@ public class BlockManager : MonoBehaviour
     { get { return holdBlockData; } }
 
     /// <summary>
-    /// 現在アクティブなブロックの設定用
+    /// 現在アクティブなブロックの取得・設定用
     /// </summary>
     public GameObject CurrentBlock
-    { set { currentBlock = value; } }
+    { get { return currentBlock; } set { currentBlock = value; } }
 
     /// <summary>
     /// Startメソッドより前に呼び出される

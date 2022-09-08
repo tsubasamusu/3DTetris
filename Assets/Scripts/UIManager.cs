@@ -346,7 +346,7 @@ public class UIManager : MonoBehaviour
             while (!end)
             {
                 //得点のテキストを設定
-                txtScore.text = score.ToString();
+                txtScore.text = score.ToString()+"\npoint";
 
                 //次のフレームへ飛ばす（実質、Updateメソッド）
                 yield return null;

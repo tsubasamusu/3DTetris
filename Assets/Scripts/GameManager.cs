@@ -123,5 +123,8 @@ public class GameManager : MonoBehaviour
 
         //ブロックの生成を止める
         blockGenerator.StopGenerateBlock();
+
+        //現在アクティブなブロックを消す
+        Destroy(BlockManager.instance.CurrentBlock);
     }
 }

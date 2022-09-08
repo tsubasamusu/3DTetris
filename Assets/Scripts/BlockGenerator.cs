@@ -67,6 +67,13 @@ public class BlockGenerator : MonoBehaviour
             Debug.Log("生成したブロックからのBlockControllerの取得に失敗");
         }
 
+        //生成するブロックが指定されていたら
+        if(blockData != null)
+        {
+            //以降の処理を行わない
+            return generatedBlock;
+        }
+
         //生成予定のブロックのデータを更新する
         UpdateNextBlockDatas();
 

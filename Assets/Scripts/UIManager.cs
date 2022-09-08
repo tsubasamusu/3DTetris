@@ -75,7 +75,7 @@ public class UIManager : MonoBehaviour
     {
         yield return PlayGameStart();
 
-        Debug.Log("押された");
+        Debug.Log("END");
     }
 
     /// <summary>
@@ -84,8 +84,11 @@ public class UIManager : MonoBehaviour
     /// <returns>待ち時間</returns>
     public IEnumerator PlayGameStart()
     {
+        //演出終了判定用
+        bool end = false;
+
         //ゲームスタートボタン判定用
-        bool clicked=false;
+        bool clicked = false;
 
         //ゲームスタートボタンを非活性化
         btnGameStart.interactable = false;
@@ -100,7 +103,7 @@ public class UIManager : MonoBehaviour
         imgLogo.sprite = GetLogoSprite(LogoType.Title);
 
         //ゲームスタートボタンからのイメージの取得に成功したら
-        if(btnGameStart.TryGetComponent(out Image imgGameStart))
+        if (btnGameStart.TryGetComponent(out Image imgGameStart))
         {
             //ゲームスタートボタンを表示
             imgGameStart.DOFade(1f, 1f);
@@ -116,22 +119,43 @@ public class UIManager : MonoBehaviour
         imgLogo.DOFade(1f, 1f);
 
         //ゲームスタートボタンのテキストを表示
-        txtGameStart.DOText("Game Start",1f).OnComplete(()=>
+        txtGameStart.DOText("Game Start", 1f).OnComplete(() =>
 
         //ゲームスタートボタンを活性化
         btnGameStart.interactable = true);
 
         //ゲームスタートボタンが押された際の処理を登録
-        btnGameStart.onClick.AddListener(()=>ClickedBtnGameStart());
+        btnGameStart.onClick.AddListener(() => ClickedBtnGameStart());
 
         //ゲームスタートボタンが押されるまで待つ
-        yield return new WaitUntil(()=>clicked==true);
+        yield return new WaitUntil(() => clicked == true);
+
+        //背景を非表示にする
+        imgBackGround.DOFade(0f, 1f);
+
+        //ロゴを非表示にする
+        imgLogo.DOFade(0f, 1f);
+
+        //ゲームスタートボタンのイメージを非表示にする
+        imgGameStart.DOFade(0f, 1f);
+
+        //ゲームスタートボタンのテキストを非表示にする
+        txtGameStart.DOFade(0f, 1f).OnComplete(() =>
+
+            //演出が終わった状態に切り替える
+            end = true);
+
+        //演出が終わるまで待つ
+        yield return new WaitUntil(() => end == true);
 
         //ゲームスタートボタンが押された際の処理
         void ClickedBtnGameStart()
         {
             //ゲームスタートボタンが押された状態に切り替える
-            clicked=true;
+            clicked = true;
+
+            //ゲームスタートボタンを非活性化
+            btnGameStart.interactable = false;
         }
     }
 

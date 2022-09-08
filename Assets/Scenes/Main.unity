@@ -1515,6 +1515,7 @@ MonoBehaviour:
   txtButton: {fileID: 474453815}
   button: {fileID: 1028339132}
   resultTran: {fileID: 918995866}
+  cameraTran: {fileID: 963194228}
   canvasGroup: {fileID: 1205763493}
   imgNextBlocks:
   - {fileID: 1796132620}

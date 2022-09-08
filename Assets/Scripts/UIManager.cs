@@ -55,6 +55,9 @@ public class UIManager : MonoBehaviour
     private Transform resultTran;//結果表示位置
 
     [SerializeField]
+    private Transform cameraTran;//カメラの位置情報
+
+    [SerializeField]
     private CanvasGroup canvasGroup;//CanvasGroup
 
     [SerializeField]
@@ -380,5 +383,38 @@ public class UIManager : MonoBehaviour
     {
         //指定されているロゴのスプライトを返す
         return logoDatasList.Find(x => x.logoType == logoType).sprLogo;
+    }
+
+    /// <summary>
+    /// UIの初期設定を行う
+    /// </summary>
+    public void SetUpUI()
+    {
+        //生成予定のブロックのイメージの向きが正しいか確認を開始する
+        StartCoroutine(CheckBlockImagesDirection());
+    }
+
+    /// <summary>
+    /// 生成予定のブロックのイメージの向きが正しいか確認する
+    /// </summary>
+    /// <returns>待ち時間</returns>
+    private IEnumerator CheckBlockImagesDirection()
+    {
+        //無限に繰り返す
+        while (true)
+        {
+            //適切な角度を取得
+            float angleY = cameraTran.position.z < 0f ? 0f : 180f;
+
+            //生成予定のブロックの数だけ繰り返す
+            for(int i = 0; i < imgNextBlocks.Length; i++)
+            {
+                //角度を設定
+                imgNextBlocks[i].transform.eulerAngles=new Vector3(0f, angleY, 0f);
+            }
+
+            //次のフレームへ飛ばす（実質、Updateメソッド）
+            yield return null;
+        }
     }
 }

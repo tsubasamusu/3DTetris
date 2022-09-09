@@ -12,12 +12,17 @@ public class BlockManager : MonoBehaviour
     [SerializeField]
     private GameManager gameManager;//GameManager
 
+    [SerializeField]
+    private Material ghostMaterial;//ゴースト用のマテリアル
+
     [HideInInspector]
     public List<GameObject> cubeList = new();//現在、ステージ上に蓄積されている立方体のリスト
 
     private GameObject currentBlock;//現在アクティブなブロック
 
     private BlockDataSO.BlockData holdBlockData;//保存されたブロックのデータ
+
+    private GameObject ghost;//ゴースト
 
     /// <summary>
     /// 保存されたブロックのデータの取得用
@@ -199,8 +204,31 @@ public class BlockManager : MonoBehaviour
     /// </summary>
     public void MakeGhost()
     {
+        //既にゴーストが存在しているなら
+        if (ghost != null)
+        {
+            //そのゴーストを消す
+            Destroy(ghost);
+        }
+
+        //MeshRendererのリスト
+        List<MeshRenderer> meshRenderersList = new();
+
         ///ゴーストを生成
-        GameObject ghost = Instantiate(CurrentBlock);
+        ghost = Instantiate(CurrentBlock);
+
+        //ゴーストからのBlockControllerの取得に成功したら
+        if (ghost.TryGetComponent(out BlockController blockController))
+        {
+            //BlockControllerを非活性化する
+            blockController.enabled = false;
+        }
+        //ゴーストからのBlockControllerの取得に失敗したら
+        else
+        {
+            //問題を報告
+            Debug.Log("ゴーストからのBlockControllerの取得に失敗");
+        }
 
         //4回繰り返す
         for (int i = 0; i < 4; i++)
@@ -218,18 +246,29 @@ public class BlockManager : MonoBehaviour
                 Debug.Log("ゴーストの孫からのコライダーの取得に失敗");
             }
 
-            //ゴーストからのBlockControllerの取得に成功したら
-            if (currentBlock.TryGetComponent(out BlockController blockController))
+            //ゴーストからのMeshRendererの取得に成功したら
+            if (ghost.transform.GetChild(0).transform.GetChild(i).gameObject.TryGetComponent(out MeshRenderer meshRenderer))
             {
-                //BlockControllerを非活性化する
-                blockController.enabled = false;
+                //ゴーストのマテリアルを設定
+                meshRenderer.material = ghostMaterial;
+
+                //リストに追加
+                meshRenderersList.Add(meshRenderer);
+
+                //ゴーストを非表示にする
+                meshRenderer.enabled = false;
             }
-            //ゴーストからのBlockControllerの取得に失敗したら
+            //ゴーストからのMeshRendererの取得に失敗したら
             else
             {
-                //問題を報告
-                Debug.Log("ゴーストからのBlockControllerの取得に失敗");
+                Debug.Log("ゴーストからのMeshRendererの取得に失敗");
             }
         }
+
+        //生成したゴーストにGhostControllerを取り付ける
+        ghost.AddComponent<GhostController>()
+            
+            //生成したゴーストの初期設定を行う
+            .SetUpGhost(meshRenderersList);
     }
 }

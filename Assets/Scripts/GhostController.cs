@@ -1,18 +1,109 @@
-using System.Collections;
-using System.Collections.Generic;
+using System.Collections.Generic;//リストを使用
 using UnityEngine;
 
 public class GhostController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    //MeshRendererのリスト
+    List<MeshRenderer> meshRenderersList = new();
+
+    /// <summary>
+    /// 毎フレーム呼び出される
+    /// </summary>
+    private void Update()
     {
-        
+        //下方向の他のブロックに触れていないなら
+        if (!CheckContactedDown())
+        {
+            //以降の処理を行わない
+            return;
+        }
+
+        //自身を適切な位置に移動させる
+        SetMeRightPos();
+
+        //MeshRendererのリストの要素数だけ繰り返す
+        for (int i = 0; i < meshRenderersList.Count; i++)
+        {
+            //MeshRendererを活性化する
+            meshRenderersList[i].enabled = true;
+        }
+
+        //自身のGhostControllerの取得に成功したら
+        if (TryGetComponent(out GhostController ghostController))
+        {
+            //GhostControllerを非活性化する
+            ghostController.enabled = false;
+        }
+        //自身のGhostControllerの取得に失敗したら
+        else
+        {
+            //問題を報告
+            Debug.Log("自身のGhostControllerの取得に失敗");
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    /// <summary>
+    /// 一定時間ごとに呼び出される
+    /// </summary>
+    private void FixedUpdate()
     {
-        
+        //下方向の他のブロックに触れたら
+        if (CheckContactedDown())
+        {
+            //以降の処理を行わない
+            return;
+        }
+
+        //ブロックを落下させる
+        transform.Translate(new Vector3(0f, -GameData.instance.GhostFallSpeed, 0f));
+    }
+
+    /// <summary>
+    /// ゴースト自身の初期設定を行う
+    /// </summary>
+    /// <param name="meshRenderersList"></param>
+    public void SetUpGhost(List<MeshRenderer> meshRenderersList)
+    {
+        //MeshRendererのリストを設定
+        this.meshRenderersList = meshRenderersList;
+    }
+
+    /// <summary>
+    /// 下方向の他のブロックに接触したかどうか調べる
+    /// </summary>
+    /// <returns>下方向の他のブロックに接触したらtrue</returns>
+    private bool CheckContactedDown()
+    {
+        //4回繰り返す
+        for (int i = 0; i < 4; i++)
+        {
+            //孫からの光線を作成
+            Ray ray = new(transform.GetChild(0).transform.GetChild(i).transform.position, Vector3.down);
+
+            //現在アクティブなブロック以外のコライダーに、光線が接触したら
+            if (Physics.Raycast(ray,out RaycastHit hit, 0.5f)&&hit.transform.root.gameObject!=BlockManager.instance.CurrentBlock)
+            {
+                //trueを返す
+                return true;
+            }
+        }
+
+        //falseを返す
+        return false;
+    }
+
+    /// <summary>
+    /// 着地後に自身を適切な位置に移動させる
+    /// </summary>
+    private void SetMeRightPos()
+    {
+        //自身のy座標の小数部分（誤差）を取得
+        float excess = transform.position.y % 0.5f;
+
+        //誤差を修正するための値を取得
+        float valueY = excess < 0.25 ? -excess : 0.5f - excess;
+
+        //座標を再設定
+        transform.position = new Vector3(transform.position.x, transform.position.y + valueY, 0f);
     }
 }

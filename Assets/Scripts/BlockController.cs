@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;//リストを使用
 using UnityEngine;
 
 public class BlockController : MonoBehaviour
@@ -17,6 +15,9 @@ public class BlockController : MonoBehaviour
     {
         //メインカメラゲームオブジェクトを取得
         mainCamera = GameObject.FindWithTag("MainCamera");
+
+        //ゴーストを生成する
+        BlockManager.instance.MakeGhost();
     }
 
     /// <summary>
@@ -55,6 +56,9 @@ public class BlockController : MonoBehaviour
 
             //カメラから見て右に移動する
             transform.Translate(new Vector3(moveValue, 0f, 0f));
+
+            //ゴーストを生成する
+            BlockManager.instance.MakeGhost();
         }
         //左矢印が押されたら
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
@@ -71,6 +75,9 @@ public class BlockController : MonoBehaviour
 
             //カメラから見て左に移動する
             transform.Translate(new Vector3(moveValue, 0f, 0f));
+
+            //ゴーストを生成する
+            BlockManager.instance.MakeGhost();
         }
 
         //上矢印が押されたら
@@ -102,6 +109,9 @@ public class BlockController : MonoBehaviour
 
             //カメラから見て反時計回りに回転させる
             transform.GetChild(0).transform.eulerAngles = new Vector3(0f, 0f, transform.GetChild(0).transform.eulerAngles.z + rotateValue);
+
+            //ゴーストを生成する
+            BlockManager.instance.MakeGhost();
         }
         //右クリックされたら
         else if(Input.GetKeyDown(KeyCode.Mouse1))
@@ -111,6 +121,9 @@ public class BlockController : MonoBehaviour
 
             //カメラから見て時計回りに回転させる
             transform.GetChild(0).transform.eulerAngles = new Vector3(0f, 0f, transform.GetChild(0).transform.eulerAngles.z + rotateValue);
+
+            //ゴーストを生成する
+            BlockManager.instance.MakeGhost();
         }
     }
 

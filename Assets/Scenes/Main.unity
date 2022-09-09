@@ -940,6 +940,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blockGenerator: {fileID: 1188378069}
   gameManager: {fileID: 146520558}
+  ghostMaterial: {fileID: 2100000, guid: 40cd6d6fe083cd04b8f7e5519089e397, type: 2}
   cubeList: []
 --- !u!4 &537128710
 Transform:
@@ -2311,6 +2312,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalFallSpeed: 0.05
   specialFallSpeed: 0.25
+  ghostFallSpeed: 0.5
   timeLimit: 180
   appointmentsNumber: 3
   scorePerColumn: 10

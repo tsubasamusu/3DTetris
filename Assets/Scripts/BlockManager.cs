@@ -24,6 +24,14 @@ public class BlockManager : MonoBehaviour
 
     private GameObject ghost;//ゴースト
 
+    private bool endDigestion=true;//消化の処理が終わったかどうか
+
+    /// <summary>
+    /// 消化終了判定取得用
+    /// </summary>
+    public bool EndDigestion
+    { get { return endDigestion; } }
+
     /// <summary>
     /// 保存されたブロックのデータの取得用
     /// </summary>
@@ -122,6 +130,9 @@ public class BlockManager : MonoBehaviour
                 continue;
             }
 
+            //消化が終わっていない状態に切り替える
+            endDigestion = false;
+
             //10回繰り返す
             for (int j = 0; j < 10; j++)
             {
@@ -148,7 +159,10 @@ public class BlockManager : MonoBehaviour
                 if (cubeList[k].transform.position.y > i)
                 {
                     //消化した回数だけ落下させる
-                    cubeList[k].transform.DOMoveY(cubeList[k].transform.position.y - digestedCount, 0.5f);
+                    cubeList[k].transform.DOMoveY(cubeList[k].transform.position.y - digestedCount, 0.5f).
+                        
+                        //アニメーションが終ったら、消化終了状態に切り替える
+                        OnComplete(()=>endDigestion=true);
                 }
             }
         }

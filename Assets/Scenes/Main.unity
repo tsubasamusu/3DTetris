@@ -2310,9 +2310,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 771781ba8a2c4724e95de0490e066520, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normalFallSpeed: 0.05
-  specialFallSpeed: 0.25
-  ghostFallSpeed: 0.5
+  normalFallSpeed: 3
+  specialFallSpeed: 30
   timeLimit: 180
   appointmentsNumber: 3
   scorePerColumn: 10

@@ -13,9 +13,6 @@ public class GameData : MonoBehaviour
     private float specialFallSpeed;//ブロックの降下速度（特別）
 
     [SerializeField]
-    private float ghostFallSpeed;//ゴーストの降下速度
-
-    [SerializeField]
     private float timeLimit;//制限時間
 
     [SerializeField, Header("ブロックの生成予定の数")]
@@ -53,12 +50,6 @@ public class GameData : MonoBehaviour
     /// </summary>
     public int ScorePerColumn
     { get { return scorePerColumn; } }
-
-    /// <summary>
-    /// ゴーストの降下速度取得用
-    /// </summary>
-    public float GhostFallSpeed
-    { get { return ghostFallSpeed; } }
 
     /// <summary>
     /// Startメソッドより前に呼び出される

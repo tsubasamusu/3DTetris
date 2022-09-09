@@ -9,6 +9,12 @@ public class BlockController : MonoBehaviour
     private BlockDataSO.BlockData myBlockData;//自分のブロックのデータ
 
     /// <summary>
+    /// 自身のブロックの情報の取得用
+    /// </summary>
+    public BlockDataSO.BlockData BlockData
+    { get { return myBlockData; } }
+
+    /// <summary>
     /// 自身の生成開始直後に呼び出される
     /// </summary>
     private void Start()
@@ -40,6 +46,9 @@ public class BlockController : MonoBehaviour
 
         //ブロックの落下速度を設定
         currentFallSpeed = Input.GetKey(KeyCode.DownArrow) ? GameData.instance.SpecialFallSpeed : GameData.instance.NormalFallSpeed;
+
+        //ブロックを落下させる
+        transform.Translate(0f, -(currentFallSpeed * Time.deltaTime), 0f);
 
         //右矢印が押されたら
         if (Input.GetKeyDown(KeyCode.RightArrow))
@@ -125,15 +134,6 @@ public class BlockController : MonoBehaviour
             //ゴーストを生成する
             BlockManager.instance.MakeGhost();
         }
-    }
-
-    /// <summary>
-    /// 一定時間ごとに呼び出される
-    /// </summary>
-    private void FixedUpdate()
-    {
-        //ブロックを落下させる
-        transform.Translate(new Vector3(0f,-currentFallSpeed,0f));
     }
 
     /// <summary>

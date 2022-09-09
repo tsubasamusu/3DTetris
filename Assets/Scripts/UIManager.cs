@@ -135,6 +135,12 @@ public class UIManager : MonoBehaviour
         //ボタンが押されるまで待つ
         yield return new WaitUntil(() => clicked == true);
 
+        //効果音を再生
+        SoundManager.instance.PlaySound(SoundDataSO.SoundName.BtnGameStartSE);
+
+        //マウスカーソルを非表示にする
+        Cursor.visible = false;
+
         //背景を非表示にする
         imgBackGround.DOFade(0f, 1f);
 
@@ -221,6 +227,9 @@ public class UIManager : MonoBehaviour
         //ボタンが押されるまで待つ
         yield return new WaitUntil(() => clicked == true);
 
+        //効果音を再生
+        SoundManager.instance.PlaySound(SoundDataSO.SoundName.BtnRestartSE);
+
         //背景を白色に変更
         imgBackGround.DOColor(Color.white, 1f);
 
@@ -300,6 +309,9 @@ public class UIManager : MonoBehaviour
 
         //ボタンが押されるまで待つ
         yield return new WaitUntil(() => clicked == true);
+
+        //効果音を再生
+        SoundManager.instance.PlaySound(SoundDataSO.SoundName.BtnRestartSE);
 
         //ロゴを非表示にする
         imgLogo.DOFade(0f, 1f);

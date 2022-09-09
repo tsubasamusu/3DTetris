@@ -11,7 +11,7 @@ public class SoundDataSO : ScriptableObject
     /// </summary> 
     public enum SoundName
     {
-       MainBGM,//メインのBGM
+       BGM,//BGM
        BtnGameStartSE,//ゲームスタートボタンが押された際の効果音
        BtnRestartSE,//リスタートボタンが押された際の効果音
        GameClearSE,//ゲームクリアした際の効果音

@@ -83,7 +83,12 @@ public class BlockController : MonoBehaviour
         //自身が回転できない座標にいたら
         if (Mathf.Abs(transform.position.x) > (5f - myBlockData.rotLength) || transform.position.y < (0.5f + myBlockData.rotLength) || !CheckLengthToOtherCube())
         {
-            //TODO:SoundManagerから「ブッブー」という効果音を鳴らす処理を呼び出す
+            //プレイヤーがブロックを回転させようとしたら
+            if (Input.GetKeyDown(KeyCode.Mouse0) || Input.GetKeyDown(KeyCode.Mouse1))
+            {
+                //効果音を再生
+                SoundManager.instance.PlaySound(SoundDataSO.SoundName.CannotRotSE);
+            }
 
             //以降の処理を行わない
             return;

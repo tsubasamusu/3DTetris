@@ -148,8 +148,15 @@ public class BlockManager : MonoBehaviour
             }
         }
 
-        //得点の表示を更新
-        UIManager.instance.UpdateTxtScore(GameData.instance.ScorePerColumn*digestedCount);
+        //1度でも消化が行われたなら
+        if (digestedCount > 0)
+        {
+            //効果音を再生
+            SoundManager.instance.PlaySound(SoundDataSO.SoundName.DigestionSE);
+
+            //得点の表示を更新
+            UIManager.instance.UpdateTxtScore(GameData.instance.ScorePerColumn * digestedCount);
+        }
     }
 
     /// <summary>

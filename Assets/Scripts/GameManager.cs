@@ -19,9 +19,6 @@ public class GameManager : MonoBehaviour
         //ゲームスタート演出が終わるまで待つ
         yield return UIManager.instance.PlayGameStart();
 
-        //マウスカーソルを非表示にする
-        Cursor.visible = false;
-
         //イメージの向きの確認の準備を行う
         UIManager.instance.PrepareCheck();
 
@@ -32,7 +29,10 @@ public class GameManager : MonoBehaviour
         UIManager.instance.UpdateTxtScore(0);
 
         //制限時間の減少を開始する
-        StartCoroutine(ReduceTimeLimit());  
+        StartCoroutine(ReduceTimeLimit());
+
+        ///BGMを再生
+        SoundManager.instance.PlaySound(SoundDataSO.SoundName.BGM, true);
     }
 
     /// <summary>
@@ -73,6 +73,9 @@ public class GameManager : MonoBehaviour
                 //制限時間のテキストの色を変える
                 UIManager.instance.SetTxtTimeLimitColor(Color.red);
 
+                //効果音を再生
+                SoundManager.instance.PlaySound(SoundDataSO.SoundName.TenTimeLimitSE);
+
                 //テキストの色を変更した状態に切り替える
                 changedColor = true;
             }
@@ -106,6 +109,9 @@ public class GameManager : MonoBehaviour
         //ゲーム終了の準備を行う
         PrepareGameEnd();
 
+        //効果音を再生
+        SoundManager.instance.PlaySound(SoundDataSO.SoundName.GameOverSE);
+
         //ゲームオーバー演出が終わるまで待つ
         yield return UIManager.instance.PlayGameOver();
 
@@ -121,6 +127,9 @@ public class GameManager : MonoBehaviour
     {
         //ゲーム終了の準備を行う
         PrepareGameEnd();
+
+        //効果音を再生
+        SoundManager.instance.PlaySound(SoundDataSO.SoundName.GameClearSE);
 
         //ゲームクリア演出が終わるまで待つ
         yield return UIManager.instance.PlayGameClear();
@@ -145,5 +154,9 @@ public class GameManager : MonoBehaviour
 
         //マウスカーソルを表示する
         Cursor.visible = true;
+
+        //BGMを止める
+        SoundManager.instance.StopSound();
+         
     }
 }

@@ -1,5 +1,5 @@
 using System.Collections;
-using System.Collections.Generic;
+using System.Collections.Generic;//リストを使用
 using UnityEngine;
 
 public class BlockController : MonoBehaviour

@@ -13,7 +13,7 @@ public class BlockManager : MonoBehaviour
     private GameManager gameManager;//GameManager
 
     [HideInInspector]
-    public List<GameObject> cubeList=new();//現在、ステージ上に蓄積されている立方体のリスト
+    public List<GameObject> cubeList = new();//現在、ステージ上に蓄積されている立方体のリスト
 
     private GameObject currentBlock;//現在アクティブなブロック
 
@@ -53,7 +53,7 @@ public class BlockManager : MonoBehaviour
     public void StoppedCurrentBlock()
     {
         //4回繰り返す
-        for(int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++)
         {
             //現在アクティブなブロックの孫0号をリストに追加
             cubeList.Add(currentBlock.transform.GetChild(0).transform.GetChild(0).gameObject);
@@ -63,7 +63,7 @@ public class BlockManager : MonoBehaviour
         }
 
         //現在アクティブなブロックからBlockControllerを取得出来たら
-        if(currentBlock.TryGetComponent(out BlockController blockController))
+        if (currentBlock.TryGetComponent(out BlockController blockController))
         {
             //BlockControllerを非活性化（無駄な処理を防ぐ）
             blockController.enabled = false;
@@ -109,16 +109,16 @@ public class BlockManager : MonoBehaviour
         {
             //同じy座標の立方体のリストを作成
             List<GameObject> samePosYList = cubeList.FindAll(x => (x.transform.position.y > (i - 0.5f)) && (x.transform.position.y < (i + 0.5f)));
-            
+
             //同じy座標の立方体の数が10より小さかったら（横一列が揃っていなかったら）
-            if(samePosYList.Count< 10)
+            if (samePosYList.Count < 10)
             {
                 //次の繰り返し処理へ移る
                 continue;
             }
 
             //10回繰り返す
-            for(int j = 0; j < 10; j++)
+            for (int j = 0; j < 10; j++)
             {
                 //対象の立方体を取得
                 GameObject cube = samePosYList[0];
@@ -191,6 +191,45 @@ public class BlockManager : MonoBehaviour
 
             //保存されているブロックのデータを空にする
             holdBlockData = null;
+        }
+    }
+
+    /// <summary>
+    /// ブロックのゴーストを作成する
+    /// </summary>
+    public void MakeGhost()
+    {
+        ///ゴーストを生成
+        GameObject ghost = Instantiate(CurrentBlock);
+
+        //4回繰り返す
+        for (int i = 0; i < 4; i++)
+        {
+            //ゴーストの孫からのコライダーの取得に成功したら
+            if (ghost.transform.GetChild(0).transform.GetChild(i).gameObject.TryGetComponent(out BoxCollider collider))
+            {
+                //コライダーを非活性化する
+                collider.enabled = false;
+            }
+            //ゴーストの孫からのコライダーの取得に失敗したら
+            else
+            {
+                //問題を報告
+                Debug.Log("ゴーストの孫からのコライダーの取得に失敗");
+            }
+
+            //ゴーストからのBlockControllerの取得に成功したら
+            if (currentBlock.TryGetComponent(out BlockController blockController))
+            {
+                //BlockControllerを非活性化する
+                blockController.enabled = false;
+            }
+            //ゴーストからのBlockControllerの取得に失敗したら
+            else
+            {
+                //問題を報告
+                Debug.Log("ゴーストからのBlockControllerの取得に失敗");
+            }
         }
     }
 }

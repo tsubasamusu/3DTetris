@@ -162,6 +162,12 @@ public class UIManager : MonoBehaviour
         //UIを表示する
         canvasGroup.alpha = 1f;
 
+        //保存されているブロックのイメージを可視化する
+        imgHold.DOFade(1f, 0f);
+
+        //保存されているブロックのイメージを空にする
+        ClearImgHoldBlock();
+
         //ボタンが押された際の処理
         void ClickedButton()
         {
@@ -394,11 +400,11 @@ public class UIManager : MonoBehaviour
     /// <param name="blockSprite">ブロックのスプライト</param>
     public void SetImgHoldBllock(Sprite blockSprite)
     {
+        //保存したブロックのイメージを活性化
+        imgHold.gameObject.SetActive(true);
+
         //保存されているブロックのスプライトを設定
         imgHold.sprite = blockSprite;
-
-        //保存したブロックのイメージを表示
-        imgHold.DOFade(0f, 0f).OnComplete(() => imgHold.DOFade(1f, 0.5f));
     }
 
     /// <summary>
@@ -470,11 +476,11 @@ public class UIManager : MonoBehaviour
     /// </summary>
     public void ClearImgHoldBlock()
     {
-        //保存されているブロックを非表示にする
-        imgHold.DOFade(0f, 0f);
-
         //スプライトをnullにする
         imgHold.sprite = null;
+
+        //保存されているブロックのイメージを非活性化する
+        imgHold.gameObject.SetActive(false);
     }
 
     /// <summary>

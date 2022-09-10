@@ -245,7 +245,7 @@ public class BlockController : MonoBehaviour
             Ray ray = new(transform.GetChild(0).transform.GetChild(i).transform.position, Vector3.down);
 
             //光線が他のコライダーに接触しなかったら
-            if (!Physics.Raycast(ray, out RaycastHit hit, 0.5f))
+            if (!Physics.Raycast(ray, out RaycastHit hit, 0.7f))
             {
                 //次の繰り返し処理へ移る
                 continue;
@@ -295,14 +295,32 @@ public class BlockController : MonoBehaviour
     /// </summary>
     private void SetMeRightPos()
     {
-        //自身のy座標の小数部分（誤差）を取得
-        float excess = transform.position.y % 0.5f;
+        //自身の孫の数だけ繰り返す
+        for (int i = 0; i < transform.GetChild(0).transform.childCount; i++)
+        {
+            //自身の孫の1人からの光線を作成
+            Ray ray = new(transform.GetChild(0).transform.GetChild(i).transform.position, Vector3.down);
 
-        //誤差を修正するための値を取得
-        float valueY = excess < 0.25 ? -excess : 0.5f - excess;
+            //光線が他のコライダーに接触しなかったら
+            if (!Physics.Raycast(ray, out RaycastHit hit, 0.7f))
+            {
+                //次の繰り返し処理へ移る
+                continue;
+            }
 
-        //座標を再設定
-        transform.position = new Vector3(transform.position.x, transform.position.y + valueY, 0f);
+            //触れた相手が自身の孫の1人なら
+            if (hit.transform.gameObject == transform.GetChild(0).transform.GetChild(i).gameObject)
+            {
+                //次の繰り返し処理へ移る
+                continue;
+            }
+
+            //自身の真下にある立方体との距離を取得
+            float length = Mathf.Abs(transform.GetChild(0).transform.GetChild(i).transform.position.y - hit.transform.position.y);
+
+            //座標を再設定
+            transform.position = new Vector3(transform.position.x, transform.position.y + (1f-length), 0f);
+        }
     }
 
     /// <summary>

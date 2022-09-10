@@ -135,9 +135,6 @@ public class UIManager : MonoBehaviour
         //ボタンが押されるまで待つ
         yield return new WaitUntil(() => clicked == true);
 
-        //効果音を再生
-        SoundManager.instance.PlaySound(SoundDataSO.SoundName.BtnGameStartSE);
-
         //マウスカーソルを非表示にする
         //Cursor.visible = false;
 
@@ -167,6 +164,9 @@ public class UIManager : MonoBehaviour
         {
             //ボタンが押された状態に切り替える
             clicked = true;
+
+            //効果音を再生
+            SoundManager.instance.PlaySound(SoundDataSO.SoundName.BtnGameStartSE);
 
             //ボタンを非活性化
             button.interactable = false;
@@ -227,9 +227,6 @@ public class UIManager : MonoBehaviour
         //ボタンが押されるまで待つ
         yield return new WaitUntil(() => clicked == true);
 
-        //効果音を再生
-        SoundManager.instance.PlaySound(SoundDataSO.SoundName.BtnRestartSE);
-
         //背景を白色に変更
         imgBackGround.DOColor(Color.white, 1f);
 
@@ -253,6 +250,12 @@ public class UIManager : MonoBehaviour
         {
             //ボタンが押された状態に切り替える
             clicked = true;
+
+            //効果音を再生
+            SoundManager.instance.PlaySound(SoundDataSO.SoundName.BtnRestartSE);
+
+            //ボタンを非活性化
+            button.interactable = false;
         }
     }
 
@@ -310,9 +313,6 @@ public class UIManager : MonoBehaviour
         //ボタンが押されるまで待つ
         yield return new WaitUntil(() => clicked == true);
 
-        //効果音を再生
-        SoundManager.instance.PlaySound(SoundDataSO.SoundName.BtnRestartSE);
-
         //ロゴを非表示にする
         imgLogo.DOFade(0f, 1f);
 
@@ -336,6 +336,12 @@ public class UIManager : MonoBehaviour
         {
             //ボタンが押された状態に切り替える
             clicked = true;
+
+            //効果音を再生
+            SoundManager.instance.PlaySound(SoundDataSO.SoundName.BtnRestartSE);
+
+            //ボタンを非活性化
+            button.interactable = false;
         }
     }
 

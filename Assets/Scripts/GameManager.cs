@@ -156,7 +156,6 @@ public class GameManager : MonoBehaviour
         Cursor.visible = true;
 
         //BGM‚ðŽ~‚ß‚é
-        SoundManager.instance.StopSound();
-         
+        SoundManager.instance.StopSound(0.5f);
     }
 }

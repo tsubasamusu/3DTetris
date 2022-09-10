@@ -61,12 +61,12 @@ public class SoundManager : MonoBehaviour
     }
 
     /// <summary>
-    /// （メインのAudioSourceで再生されている）音を止める
+    /// （メインのAudioSourceの）音を止める
     /// </summary>
     /// <param name="fadeOutTime">フェードアウト時間</param>
-    public void StopSound(float fadeOutTime=0f)
+    public void StopSound(float fadeOutTime = 0f)
     {
         //音をフェードアウトさせる
-        mainAud.DOFade(0f,fadeOutTime);
+        mainAud.DOFade(0f, fadeOutTime);
     }
 }

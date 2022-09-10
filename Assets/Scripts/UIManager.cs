@@ -136,7 +136,7 @@ public class UIManager : MonoBehaviour
         yield return new WaitUntil(() => clicked == true);
 
         //マウスカーソルを非表示にする
-        //Cursor.visible = false;
+        Cursor.visible = false;
 
         //背景を非表示にする
         imgBackGround.DOFade(0f, 1f);

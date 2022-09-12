@@ -13,9 +13,9 @@ public class BlockGenerator : MonoBehaviour
     private bool stop;//ブロックの生成停止判定用
 
     /// <summary>
-    /// ゲーム開始直後に呼び出される
+    /// BlockGeneratorの初期設定を行う
     /// </summary>
-    private void Start()
+    public void SetUpBlockGenerator()
     {
         //生成予定のブロックのデータの配列の要素数を設定
         nextBlockDatas = new BlockDataSO.BlockData[GameData.instance.AppointmentsNumber];

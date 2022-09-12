@@ -9,7 +9,6 @@ public class BlockManager : MonoBehaviour
     [SerializeField]
     private BlockGenerator blockGenerator;//BlockGenerator
 
-    [SerializeField]
     private GameManager gameManager;//GameManager
 
     [SerializeField]
@@ -58,6 +57,16 @@ public class BlockManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    /// <summary>
+    /// BlockManager‚Ì‰Šúİ’è‚ğs‚¤
+    /// </summary>
+    /// <param name="gameManager">GameManager</param>
+    public void SetUpBlockManager(GameManager gameManager)
+    {
+        //GameManager‚ğæ“¾
+        this.gameManager = gameManager;
     }
 
     /// <summary>

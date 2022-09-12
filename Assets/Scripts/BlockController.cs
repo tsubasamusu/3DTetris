@@ -15,18 +15,6 @@ public class BlockController : MonoBehaviour
     { get { return myBlockData; } }
 
     /// <summary>
-    /// 自身の生成開始直後に呼び出される
-    /// </summary>
-    private void Start()
-    {
-        //メインカメラゲームオブジェクトを取得
-        mainCamera = GameObject.FindWithTag("MainCamera");
-
-        //ゴーストを生成する
-        BlockManager.instance.MakeGhost();
-    }
-
-    /// <summary>
     /// 毎フレーム呼び出される
     /// </summary>
     private void Update()
@@ -288,6 +276,12 @@ public class BlockController : MonoBehaviour
     {
         //自分のブロックのデータを取得
         myBlockData = yourBlockData;
+
+        //メインカメラゲームオブジェクトを取得
+        mainCamera = GameObject.FindWithTag("MainCamera");
+
+        //ゴーストを生成する
+        BlockManager.instance.MakeGhost();
     }
 
     /// <summary>

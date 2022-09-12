@@ -7,31 +7,6 @@ public class GhostController : MonoBehaviour
     List<MeshRenderer> meshRenderersList = new();
 
     /// <summary>
-    /// 自身の生成直後に呼び出される
-    /// </summary>
-    private void Start()
-    {
-        //現在アクティブなブロックからのBlockControllerの取得に失敗したら
-        if(!BlockManager.instance.CurrentBlock.TryGetComponent(out BlockController blockController))
-        {
-            //問題を報告
-            Debug.Log("現在アクティブなブロックからのBlockControllerの取得に失敗");
-
-            //以降の処理を行わない
-            return;
-        }
-
-        //自身のブロックの情報を取得
-        BlockDataSO.BlockData myBlockData=blockController.BlockData;
-
-        //適切なy座標を取得
-        float posY = myBlockData.isEvenWidth ? 25.5f : 25f;
-
-        //自身を適切な降下位置に移動させる
-        transform.position = new Vector3(transform.position.x, posY, 0f);
-    }
-
-    /// <summary>
     /// 毎フレーム呼び出される
     /// </summary>
     private void Update()
@@ -65,6 +40,25 @@ public class GhostController : MonoBehaviour
     {
         //MeshRendererのリストを設定
         this.meshRenderersList = meshRenderersList;
+
+        //現在アクティブなブロックからのBlockControllerの取得に失敗したら
+        if (!BlockManager.instance.CurrentBlock.TryGetComponent(out BlockController blockController))
+        {
+            //問題を報告
+            Debug.Log("現在アクティブなブロックからのBlockControllerの取得に失敗");
+
+            //以降の処理を行わない
+            return;
+        }
+
+        //自身のブロックの情報を取得
+        BlockDataSO.BlockData myBlockData = blockController.BlockData;
+
+        //適切なy座標を取得
+        float posY = myBlockData.isEvenWidth ? 25.5f : 25f;
+
+        //自身を適切な降下位置に移動させる
+        transform.position = new Vector3(transform.position.x, posY, 0f);
     }
 
     /// <summary>

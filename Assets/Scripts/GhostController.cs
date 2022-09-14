@@ -36,7 +36,7 @@ public class GhostController : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        //下方向の他のブロックに触れたら
+        //下方向のブロックに触れたなら
         if (CheckContactedDown())
         {
             //着地後の処理を行う
@@ -47,7 +47,7 @@ public class GhostController : MonoBehaviour
         }
 
         //消化が終わっていないなら
-        if(!BlockManager.instance.EndDigestion)
+        if (!BlockManager.instance.EndDigestion)
         {
             //以降の処理を行わない
             return;

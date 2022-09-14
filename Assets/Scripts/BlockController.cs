@@ -8,6 +8,12 @@ public class BlockController : MonoBehaviour
 
     private BlockDataSO.BlockData myBlockData;//自分のブロックのデータ
 
+    private GameManager gameManager;//GameManager
+
+    private BlockGenerator blockGenerator;//BlockGenerator
+
+    private bool setUp;//初期設定が終わったかどうか
+
     /// <summary>
     /// 自身のブロックの情報の取得用
     /// </summary>
@@ -15,15 +21,27 @@ public class BlockController : MonoBehaviour
     { get { return myBlockData; } }
 
     /// <summary>
-    /// 自身の生成開始直後に呼び出される
+    /// BlockControllerの初期設定を行う
     /// </summary>
-    private void Start()
+    /// <param name="gameManager">GameManager</param>
+    /// <param name="blockGenerator">BlockGenerator</param>
+    /// <param name="blockData">ブロックのデータ</param>
+    public void SetUpBlockController(GameManager gameManager,BlockGenerator blockGenerator,BlockDataSO.BlockData blockData)
     {
+        //Gamemanagerを取得
+        this.gameManager = gameManager;
+
+        //BlockGeneratorを取得
+        this.blockGenerator = blockGenerator;
+
+        //自身のデータを取得
+        myBlockData = blockData;
+
         //メインカメラゲームオブジェクトを取得
         mainCamera = GameObject.FindWithTag("MainCamera");
 
-        //ゴーストを生成する
-        BlockManager.instance.MakeGhost();
+        //初期設定完了状態に切り替える
+        setUp = true;
     }
 
     /// <summary>
@@ -31,6 +49,13 @@ public class BlockController : MonoBehaviour
     /// </summary>
     private void Update()
     {
+        //初期設定が終わっていないなら
+        if(!setUp)
+        {
+            //以降の処理を行わない
+            return;
+        }
+
         //下方向の他のブロックに触れたら
         if (CheckContactedDown())
         {
@@ -38,7 +63,7 @@ public class BlockController : MonoBehaviour
             SetMeRightPos();
 
             //BlockManagerから適切な処理を呼び出す
-            BlockManager.instance.StoppedCurrentBlock();
+            BlockManager.instance.StoppedCurrentBlock(gameManager,blockGenerator);
 
             //以降の処理を行わない
             return;
@@ -93,7 +118,7 @@ public class BlockController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             //ブロックの保存・使用を行う
-            BlockManager.instance.HoldBlock(myBlockData);
+            BlockManager.instance.HoldBlock(myBlockData,blockGenerator,gameManager);
         }
 
         //自身が回転できない座標にいたら
@@ -278,16 +303,6 @@ public class BlockController : MonoBehaviour
 
         //falseを返す
         return false;
-    }
-
-    /// <summary>
-    /// 自分のブロックの初期設定を行う
-    /// </summary>
-    /// <param name="yourBlockData">対象のブロックのデータ</param>
-    public void SetUpBlock(BlockDataSO.BlockData yourBlockData)
-    {
-        //自分のブロックのデータを取得
-        myBlockData = yourBlockData;
     }
 
     /// <summary>

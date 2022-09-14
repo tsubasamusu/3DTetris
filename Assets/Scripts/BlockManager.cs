@@ -7,12 +7,6 @@ public class BlockManager : MonoBehaviour
     public static BlockManager instance;//インスタンス
 
     [SerializeField]
-    private BlockGenerator blockGenerator;//BlockGenerator
-
-    [SerializeField]
-    private GameManager gameManager;//GameManager
-
-    [SerializeField]
     private Material ghostMaterial;//ゴースト用のマテリアル
 
     [HideInInspector]
@@ -63,7 +57,9 @@ public class BlockManager : MonoBehaviour
     /// <summary>
     /// 現在アクティブなブロックの動きが止まった時に呼び出される
     /// </summary>
-    public void StoppedCurrentBlock()
+    /// <param name="gameManager">GameManager</param>
+    /// <param name="blockGenerator">BlockGenerator</param>
+    public void StoppedCurrentBlock(GameManager gameManager,BlockGenerator blockGenerator)
     {
         //4回繰り返す
         for (int i = 0; i < 4; i++)
@@ -106,7 +102,10 @@ public class BlockManager : MonoBehaviour
         CheckDigested();
 
         //ブロックを1度生成し、生成したブロックの情報を取得
-        currentBlock = blockGenerator.GenerateBlock();
+        currentBlock = blockGenerator.GenerateBlock(gameManager);
+
+        //ゴーストを生成する
+        MakeGhost();
     }
 
     /// <summary>
@@ -182,7 +181,9 @@ public class BlockManager : MonoBehaviour
     /// ブロックの保存・使用を行う
     /// </summary>
     /// <param name="blockData">呼び出し元のブロックのデータ</param>
-    public void HoldBlock(BlockDataSO.BlockData blockData)
+    /// <param name="blockGenerator">BlockGenerator</param>
+    /// <param name="gameManager">GameManager</param>
+    public void HoldBlock(BlockDataSO.BlockData blockData,BlockGenerator blockGenerator,GameManager gameManager)
     {
         //現在アクティブなブロックを消す
         Destroy(currentBlock);
@@ -197,7 +198,7 @@ public class BlockManager : MonoBehaviour
             UIManager.instance.SetImgHoldBllock(blockData.sprite);
 
             //ブロックを1度生成し、生成したブロックの情報を取得
-            currentBlock = blockGenerator.GenerateBlock();
+            currentBlock = blockGenerator.GenerateBlock(gameManager);
         }
         //保存されているブロックがあれば
         else
@@ -206,7 +207,7 @@ public class BlockManager : MonoBehaviour
             UIManager.instance.ClearImgHoldBlock();
 
             //保存されているブロックを生成する
-            currentBlock = blockGenerator.GenerateBlock(holdBlockData);
+            currentBlock = blockGenerator.GenerateBlock(gameManager,holdBlockData);
 
             //保存されているブロックのデータを空にする
             holdBlockData = null;
@@ -228,7 +229,7 @@ public class BlockManager : MonoBehaviour
         //MeshRendererのリスト
         List<MeshRenderer> meshRenderersList = new();
 
-        ///ゴーストを生成
+        //ゴーストを生成
         ghost = Instantiate(CurrentBlock);
 
         //ゴーストからのBlockControllerの取得に成功したら

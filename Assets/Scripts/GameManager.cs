@@ -16,6 +16,9 @@ public class GameManager : MonoBehaviour
     /// <returns>待ち時間</returns>
     private IEnumerator Start()
     {
+        //BlockGeneratorの初期設定を行う
+        blockGenerator.SetUpBlockGenerator();
+
         //ゲームスタート演出が終わるまで待つ
         yield return UIManager.instance.PlayGameStart();
 
@@ -23,7 +26,7 @@ public class GameManager : MonoBehaviour
         UIManager.instance.PrepareCheck();
 
         //ブロックを生成し、生成したブロックをBlockManagerに渡す
-        BlockManager.instance.CurrentBlock = blockGenerator.GenerateBlock();
+        BlockManager.instance.CurrentBlock = blockGenerator.GenerateBlock(this);
 
         //得点を「0」に設定
         UIManager.instance.UpdateTxtScore(0);

@@ -12,10 +12,12 @@ public class BlockGenerator : MonoBehaviour
 
     private bool stop;//ブロックの生成停止判定用
 
+    private bool setUp;//初期設定が完了したかどうか
+
     /// <summary>
-    /// ゲーム開始直後に呼び出される
+    /// BlockGeneratorの初期設定を行う
     /// </summary>
-    private void Start()
+    public void SetUpBlockGenerator()
     {
         //生成予定のブロックのデータの配列の要素数を設定
         nextBlockDatas = new BlockDataSO.BlockData[GameData.instance.AppointmentsNumber];
@@ -26,6 +28,9 @@ public class BlockGenerator : MonoBehaviour
             //生成予定のブロックのデータの配列の各要素にランダムなデータを入れる
             nextBlockDatas[i] = blockDataSO.blockDataList[Random.Range(0, blockDataSO.blockDataList.Count)];
         }
+
+        //初期設定完了状態に切り替える
+        setUp = true;
     }
 
     /// <summary>
@@ -33,8 +38,15 @@ public class BlockGenerator : MonoBehaviour
     /// </summary>
     /// <param name="blockData">生成したいブロックのデータ</param>
     /// <returns>生成したブロック</returns>
-    public GameObject GenerateBlock(BlockDataSO.BlockData blockData = null)
+    public GameObject GenerateBlock(GameManager gameManager, BlockDataSO.BlockData blockData = null)
     {
+        //初期設定が完了していないなら
+        if(!setUp)
+        {
+            //以降の処理を行わない
+            return null;
+        }
+
         //ブロックの生成停止命令が出ていたら
         if(stop)
         {
@@ -57,8 +69,8 @@ public class BlockGenerator : MonoBehaviour
         //生成したブロックからBlockDetailを取得出来たら
         if (generatedBlock.TryGetComponent(out BlockController blockController))
         {
-            //生成したブロックに、そのブロック自身の情報を渡す
-            blockController.SetUpBlock(originalData);
+            //生成したブロックの初期設定を行う
+            blockController.SetUpBlockController(gameManager, this, originalData);
         }
         //取得に失敗したら
         else

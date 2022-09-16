@@ -55,9 +55,6 @@ public class UIManager : MonoBehaviour
     private Transform resultTran;//結果表示位置
 
     [SerializeField]
-    private Transform cameraTran;//カメラの位置情報
-
-    [SerializeField]
     private CanvasGroup canvasGroup;//CanvasGroup
 
     [SerializeField]
@@ -65,6 +62,8 @@ public class UIManager : MonoBehaviour
 
     [SerializeField]
     private List<LogoData> logoDatasList=new();//ロゴのデータのリスト
+
+    private Transform cameraTran;//カメラの位置情報
 
     private int score;//得点
 
@@ -82,6 +81,18 @@ public class UIManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    public void SetUpUIManager()
+    {
+        //カメラの位置情報を取得
+        cameraTran = Camera.main.transform;
+
+        //イメージの向きの確認の準備を行う
+        PrepareCheck();
+
+        //得点を「0」に設定
+        UpdateTxtScore(0);
     }
 
     /// <summary>
@@ -438,7 +449,7 @@ public class UIManager : MonoBehaviour
     /// <summary>
     /// イメージの向きの確認の準備を行う
     /// </summary>
-    public void PrepareCheck()
+    private void PrepareCheck()
     {
         //イメージの向きが正しいか確認を開始する
         StartCoroutine(CheckImagesDirection());

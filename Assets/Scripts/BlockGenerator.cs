@@ -38,7 +38,7 @@ public class BlockGenerator : MonoBehaviour
     /// </summary>
     /// <param name="blockData">生成したいブロックのデータ</param>
     /// <returns>生成したブロック</returns>
-    public GameObject GenerateBlock(GameManager gameManager, BlockDataSO.BlockData blockData = null)
+    public GameObject GenerateBlock(BlockDataSO.BlockData blockData = null)
     {
         //初期設定が完了していないなら
         if(!setUp)
@@ -70,7 +70,7 @@ public class BlockGenerator : MonoBehaviour
         if (generatedBlock.TryGetComponent(out BlockController blockController))
         {
             //生成したブロックの初期設定を行う
-            blockController.SetUpBlockController(gameManager, this, originalData);
+            blockController.SetUpBlockController(originalData);
         }
         //取得に失敗したら
         else

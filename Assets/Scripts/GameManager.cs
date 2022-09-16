@@ -19,17 +19,17 @@ public class GameManager : MonoBehaviour
         //BlockGeneratorの初期設定を行う
         blockGenerator.SetUpBlockGenerator();
 
+        //BlockManagerの初期設定を行う
+        BlockManager.instance.SetUpBlockManager(this,blockGenerator);
+
         //ゲームスタート演出が終わるまで待つ
         yield return UIManager.instance.PlayGameStart();
 
-        //イメージの向きの確認の準備を行う
-        UIManager.instance.PrepareCheck();
-
         //ブロックを生成し、生成したブロックをBlockManagerに渡す
-        BlockManager.instance.CurrentBlock = blockGenerator.GenerateBlock(this);
+        BlockManager.instance.CurrentBlock = blockGenerator.GenerateBlock();
 
-        //得点を「0」に設定
-        UIManager.instance.UpdateTxtScore(0);
+        //UIManagerの初期設定を行う
+        UIManager.instance.SetUpUIManager();
 
         //制限時間の減少を開始する
         StartCoroutine(ReduceTimeLimit());

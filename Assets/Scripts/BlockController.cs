@@ -4,13 +4,9 @@ public class BlockController : MonoBehaviour
 {
     private float currentFallSpeed;//ブロックの今の降下速度
 
-    private GameObject mainCamera;//メインカメラゲームオブジェクト
+    private Transform mainCameraTran;//メインカメラの位置情報
 
     private BlockDataSO.BlockData myBlockData;//自分のブロックのデータ
-
-    private GameManager gameManager;//GameManager
-
-    private BlockGenerator blockGenerator;//BlockGenerator
 
     private bool setUp;//初期設定が終わったかどうか
 
@@ -23,22 +19,15 @@ public class BlockController : MonoBehaviour
     /// <summary>
     /// BlockControllerの初期設定を行う
     /// </summary>
-    /// <param name="gameManager">GameManager</param>
     /// <param name="blockGenerator">BlockGenerator</param>
     /// <param name="blockData">ブロックのデータ</param>
-    public void SetUpBlockController(GameManager gameManager,BlockGenerator blockGenerator,BlockDataSO.BlockData blockData)
+    public void SetUpBlockController(BlockDataSO.BlockData blockData)
     {
-        //Gamemanagerを取得
-        this.gameManager = gameManager;
-
-        //BlockGeneratorを取得
-        this.blockGenerator = blockGenerator;
-
         //自身のデータを取得
         myBlockData = blockData;
 
-        //メインカメラゲームオブジェクトを取得
-        mainCamera = GameObject.FindWithTag("MainCamera");
+        //メインカメラの位置情報を取得
+        mainCameraTran = Camera.main.transform;
 
         //初期設定完了状態に切り替える
         setUp = true;
@@ -63,7 +52,7 @@ public class BlockController : MonoBehaviour
             SetMeRightPos();
 
             //BlockManagerから適切な処理を呼び出す
-            BlockManager.instance.StoppedCurrentBlock(gameManager,blockGenerator);
+            BlockManager.instance.StoppedCurrentBlock();
 
             //以降の処理を行わない
             return;
@@ -79,14 +68,14 @@ public class BlockController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             //カメラから見て右にいて、他のコライダーに触れていたら
-            if ((mainCamera.transform.position.z < 0f && CheckContactedRight()) || (mainCamera.transform.position.z >= 0f && CheckContactedLeft()))
+            if ((mainCameraTran.position.z < 0f && CheckContactedRight()) || (mainCameraTran.position.z >= 0f && CheckContactedLeft()))
             {
                 //以降の処理を行わない
                 return;
             }
 
             //カメラの位置に応じて移動方向を設定
-            float moveValue = mainCamera.transform.position.z < 0f ? 1f : -1f;
+            float moveValue = mainCameraTran.position.z < 0f ? 1f : -1f;
 
             //カメラから見て右に移動する
             transform.Translate(new Vector3(moveValue, 0f, 0f));
@@ -98,14 +87,14 @@ public class BlockController : MonoBehaviour
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
             //カメラから見て左にいて、他のコライダーに触れていたら
-            if ((mainCamera.transform.position.z < 0f && CheckContactedLeft()) || (mainCamera.transform.position.z >= 0f && CheckContactedRight()))
+            if ((mainCameraTran.position.z < 0f && CheckContactedLeft()) || (mainCameraTran.position.z >= 0f && CheckContactedRight()))
             {
                 //以降の処理を行わない
                 return;
             }
 
             //カメラの位置に応じて移動方向を設定
-            float moveValue = mainCamera.transform.position.z < 0f ? -1f : 1f;
+            float moveValue = mainCameraTran.position.z < 0f ? -1f : 1f;
 
             //カメラから見て左に移動する
             transform.Translate(new Vector3(moveValue, 0f, 0f));
@@ -118,7 +107,7 @@ public class BlockController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.UpArrow))
         {
             //ブロックの保存・使用を行う
-            BlockManager.instance.HoldBlock(myBlockData,blockGenerator,gameManager);
+            BlockManager.instance.HoldBlock(myBlockData);
         }
 
         //自身が回転できない座標にいたら
@@ -139,7 +128,7 @@ public class BlockController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             //カメラの位置に応じて回転方向を設定
-            float rotateValue = mainCamera.transform.position.z < 0 ? 90f : -90f;
+            float rotateValue = mainCameraTran.position.z < 0 ? 90f : -90f;
 
             //カメラから見て反時計回りに回転させる
             transform.GetChild(0).transform.eulerAngles = new Vector3(0f, 0f, transform.GetChild(0).transform.eulerAngles.z + rotateValue);
@@ -151,7 +140,7 @@ public class BlockController : MonoBehaviour
         else if(Input.GetKeyDown(KeyCode.Mouse1))
         {
             //カメラの位置に応じて回転方向を設定
-            float rotateValue = mainCamera.transform.position.z < 0 ? -90f : 90f;
+            float rotateValue = mainCameraTran.position.z < 0 ? -90f : 90f;
 
             //カメラから見て時計回りに回転させる
             transform.GetChild(0).transform.eulerAngles = new Vector3(0f, 0f, transform.GetChild(0).transform.eulerAngles.z + rotateValue);

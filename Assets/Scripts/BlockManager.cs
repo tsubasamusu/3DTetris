@@ -225,6 +225,9 @@ public class BlockManager : MonoBehaviour
             //保存されているブロックのデータを空にする
             holdBlockData = null;
         }
+
+        //ゴーストを生成する
+        MakeGhost();
     }
 
     /// <summary>

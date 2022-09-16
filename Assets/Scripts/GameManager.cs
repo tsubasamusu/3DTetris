@@ -28,6 +28,9 @@ public class GameManager : MonoBehaviour
         //ブロックを生成し、生成したブロックをBlockManagerに渡す
         BlockManager.instance.CurrentBlock = blockGenerator.GenerateBlock();
 
+        //ゴーストを生成する
+        BlockManager.instance.MakeGhost();
+
         //UIManagerの初期設定を行う
         UIManager.instance.SetUpUIManager();
 

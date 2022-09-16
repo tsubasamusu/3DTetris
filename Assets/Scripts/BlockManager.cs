@@ -238,7 +238,7 @@ public class BlockManager : MonoBehaviour
         //既にゴーストが存在しているなら
         if (ghost != null)
         {
-            if (ghost.TryGetComponent(out GhostController ghostController))
+            if (ghost.TryGetComponent(out GhostController _))
             {
                 //以降の処理を行わない
                 return;

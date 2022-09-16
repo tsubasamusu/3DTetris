@@ -68,8 +68,8 @@ public class GhostController : MonoBehaviour
         //無限に繰り返す
         while(true)
         {
-            //下方向のブロックに触れたら
-            if(CheckContactedDown())
+            //下方向のブロックに触れるか、ブロックをすり抜けて最下層に行ってしまったら
+            if(CheckContactedDown()||transform.position.y<0f)
             {
                 //繰り返し処理から抜け出す
                 break;
@@ -122,18 +122,8 @@ public class GhostController : MonoBehaviour
             meshRenderersList[i].enabled = true;
         }
 
-        //自身のGhostControllerの取得に成功したら
-        if (TryGetComponent(out GhostController ghostController))
-        {
-            //GhostControllerを消す
-            Destroy(ghostController);
-        }
-        //自身のGhostControllerの取得に失敗したら
-        else
-        {
-            //問題を報告
-            Debug.Log("自身のGhostControllerの取得に失敗");
-        }
+        //GhostControllerを消す
+        Destroy(this);
     }
 
     /// <summary>

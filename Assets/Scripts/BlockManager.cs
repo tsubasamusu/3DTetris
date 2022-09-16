@@ -238,6 +238,12 @@ public class BlockManager : MonoBehaviour
         //既にゴーストが存在しているなら
         if (ghost != null)
         {
+            if (ghost.TryGetComponent(out GhostController ghostController))
+            {
+                //以降の処理を行わない
+                return;
+            }
+
             //そのゴーストを消す
             Destroy(ghost);
         }
@@ -297,9 +303,9 @@ public class BlockManager : MonoBehaviour
         }
 
         //生成したゴーストにGhostControllerを取り付ける
-        ghost.AddComponent<GhostController>()
-            
+        StartCoroutine(ghost.AddComponent<GhostController>()
+
             //生成したゴーストの初期設定を行う
-            .SetUpGhost(meshRenderersList);
+            .SetUpGhost(meshRenderersList));
     }
 }

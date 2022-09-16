@@ -1,4 +1,5 @@
 using System.Collections.Generic;//リストを使用
+using System.Collections;//IEnumeratorを使用
 using UnityEngine;
 
 public class GhostController : MonoBehaviour
@@ -7,61 +8,37 @@ public class GhostController : MonoBehaviour
     List<MeshRenderer> meshRenderersList = new();
 
     ///// <summary>
-    ///// 自身の生成直後に呼び出される
+    ///// 毎フレーム呼び出される
     ///// </summary>
-    //private void Start()
+    //private void Update()
     //{
-    //    //現在アクティブなブロックからのBlockControllerの取得に失敗したら
-    //    if(!BlockManager.instance.CurrentBlock.TryGetComponent(out BlockController blockController))
+    //    //下方向のブロックに触れたなら
+    //    if (CheckContactedDown())
     //    {
-    //        //問題を報告
-    //        Debug.Log("現在アクティブなブロックからのBlockControllerの取得に失敗");
+    //        //着地後の処理を行う
+    //        LandingMe();
 
     //        //以降の処理を行わない
     //        return;
     //    }
 
-    //    //自身のブロックの情報を取得
-    //    BlockDataSO.BlockData myBlockData=blockController.BlockData;
+    //    //消化が終わっていないなら
+    //    if (!BlockManager.instance.EndDigestion)
+    //    {
+    //        //以降の処理を行わない
+    //        return;
+    //    }
 
-    //    //適切なy座標を取得
-    //    float posY = myBlockData.isEvenWidth ? 25.5f : 25f;
-
-    //    //自身を適切な降下位置に移動させる
-    //    transform.position = new Vector3(transform.position.x, posY, 0f);
+    //    //ゴーストを落下させる
+    //    transform.Translate(0f, -1f, 0f);
     //}
-
-    /// <summary>
-    /// 毎フレーム呼び出される
-    /// </summary>
-    private void Update()
-    {
-        //下方向のブロックに触れたなら
-        if (CheckContactedDown())
-        {
-            //着地後の処理を行う
-            LandingMe();
-
-            //以降の処理を行わない
-            return;
-        }
-
-        //消化が終わっていないなら
-        if (!BlockManager.instance.EndDigestion)
-        {
-            //以降の処理を行わない
-            return;
-        }
-
-        //ゴーストを落下させる
-        transform.Translate(0f, -1f, 0f);
-    }
 
     /// <summary>
     /// ゴースト自身の初期設定を行う
     /// </summary>
-    /// <param name="meshRenderersList"></param>
-    public void SetUpGhost(List<MeshRenderer> meshRenderersList)
+    /// <param name="meshRenderersList">自身のMeshRendererのリスト</param>
+    /// <returns>待ち時間</returns>
+    public IEnumerator SetUpGhost(List<MeshRenderer> meshRenderersList)
     {
         //MeshRendererのリストを設定
         this.meshRenderersList = meshRenderersList;
@@ -73,7 +50,7 @@ public class GhostController : MonoBehaviour
             Debug.Log("現在アクティブなブロックからのBlockControllerの取得に失敗");
 
             //以降の処理を行わない
-            return;
+            yield break;
         }
 
         //自身のブロックの情報を取得
@@ -84,6 +61,26 @@ public class GhostController : MonoBehaviour
 
         //自身を適切な降下位置に移動させる
         transform.position = new Vector3(transform.position.x, posY, 0f);
+
+        //ブロックの消化が終わるまで待つ
+        yield return new WaitUntil(() => BlockManager.instance.EndDigestion);
+
+        //無限に繰り返す
+        while(true)
+        {
+            //下方向のブロックに触れたら
+            if(CheckContactedDown())
+            {
+                //繰り返し処理から抜け出す
+                break;
+            }
+
+            //ゴーストを落下させる
+            transform.Translate(0f, -1f, 0f);
+        }
+
+        //着地後の処理を行う
+        LandingMe();
     }
 
     /// <summary>
@@ -128,8 +125,8 @@ public class GhostController : MonoBehaviour
         //自身のGhostControllerの取得に成功したら
         if (TryGetComponent(out GhostController ghostController))
         {
-            //GhostControllerを非活性化する
-            ghostController.enabled = false;
+            //GhostControllerを消す
+            Destroy(ghostController);
         }
         //自身のGhostControllerの取得に失敗したら
         else

@@ -80,8 +80,8 @@ public class BlockController : MonoBehaviour
             //カメラから見て右に移動する
             transform.Translate(new Vector3(moveValue, 0f, 0f));
 
-            //ゴーストを生成する
-            BlockManager.instance.MakeGhost();
+            //ゴーストの生成準備を行う
+            BlockManager.instance.PrepareMakeGhost();
         }
         //左矢印が押されたら
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
@@ -99,8 +99,8 @@ public class BlockController : MonoBehaviour
             //カメラから見て左に移動する
             transform.Translate(new Vector3(moveValue, 0f, 0f));
 
-            //ゴーストを生成する
-            BlockManager.instance.MakeGhost();
+            //ゴーストの生成準備を行う
+            BlockManager.instance.PrepareMakeGhost();
         }
 
         //上矢印が押されたら
@@ -133,8 +133,8 @@ public class BlockController : MonoBehaviour
             //カメラから見て反時計回りに回転させる
             transform.GetChild(0).transform.eulerAngles = new Vector3(0f, 0f, transform.GetChild(0).transform.eulerAngles.z + rotateValue);
 
-            //ゴーストを生成する
-            BlockManager.instance.MakeGhost();
+            //ゴーストの生成準備を行う
+            BlockManager.instance.PrepareMakeGhost();
         }
         //右クリックされたら
         else if(Input.GetKeyDown(KeyCode.Mouse1))
@@ -145,8 +145,8 @@ public class BlockController : MonoBehaviour
             //カメラから見て時計回りに回転させる
             transform.GetChild(0).transform.eulerAngles = new Vector3(0f, 0f, transform.GetChild(0).transform.eulerAngles.z + rotateValue);
 
-            //ゴーストを生成する
-            BlockManager.instance.MakeGhost();
+            //ゴーストの生成準備を行う
+            BlockManager.instance.PrepareMakeGhost();
         }
     }
 

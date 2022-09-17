@@ -95,8 +95,50 @@ public class GhostController : MonoBehaviour
     /// </summary>
     private void SetMeRightPos()
     {
+        //ゴーストが埋もれているか調べて、正常な位置に移動させる
+        CheckBuried();
+
+        //プレーヤーが操作しているブロックと横方向でズレていたら
+        if (Mathf.Abs(transform.position.x-BlockManager.instance.CurrentBlock.transform.position.x)>0.5f)
+        {
+            //座標を再設定
+            transform.position = new Vector3(BlockManager.instance.CurrentBlock.transform.position.x, transform.position.y, 0f);
+
+            //無限に繰り返す
+            while (true)
+            {
+                //下方向のブロックに触れるか、ブロックをすり抜けて最下層に行ってしまったら
+                if (CheckContactedDown() || transform.position.y < 0f)
+                {
+                    //繰り返し処理から抜け出す
+                    break;
+                }
+
+                //ゴーストを落下させる
+                transform.Translate(0f, -1f, 0f);
+            }
+
+            //ゴーストが埋もれているか調べて、正常な位置に移動させる
+            CheckBuried();
+        }
+
+        //自身のy座標の小数部分（誤差）を取得
+        float excess = transform.position.y % 0.5f;
+
+        //誤差を修正するための値を取得
+        float valueY = excess < 0.25 ? -excess : 0.5f - excess;
+
+        //座標を再設定
+        transform.position = new Vector3(transform.position.x, transform.position.y + valueY, 0f);
+    }
+
+    /// <summary>
+    /// ゴーストが埋もれているか調べて、正常な位置に移動させる
+    /// </summary>
+    private void CheckBuried()
+    {
         //4回（孫の数）繰り返す
-        for(int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++)
         {
             //ステージの下枠に埋まっていたら
             if (Mathf.Abs(transform.GetChild(0).transform.GetChild(i).transform.position.y - 0f) < 0.5f)
@@ -109,7 +151,7 @@ public class GhostController : MonoBehaviour
             for (int j = 0; j < BlockManager.instance.cubeList.Count; j++)
             {
                 //他のブロックに埋まっていたら
-                if (Mathf.Abs(transform.GetChild(0).transform.GetChild(i).transform.position.y - BlockManager.instance.cubeList[j].transform.position.y)<0.5f
+                if (Mathf.Abs(transform.GetChild(0).transform.GetChild(i).transform.position.y - BlockManager.instance.cubeList[j].transform.position.y) < 0.5f
                     && Mathf.Abs(transform.GetChild(0).transform.GetChild(i).transform.position.x - BlockManager.instance.cubeList[j].transform.position.x) < 0.5)
                 {
                     //ゴーストを1つ上に移動させる
@@ -117,14 +159,5 @@ public class GhostController : MonoBehaviour
                 }
             }
         }
-
-        //自身のy座標の小数部分（誤差）を取得
-        float excess = transform.position.y % 0.5f;
-
-        //誤差を修正するための値を取得
-        float valueY = excess < 0.25 ? -excess : 0.5f - excess;
-
-        //座標を再設定
-        transform.position = new Vector3(transform.position.x, transform.position.y + valueY, 0f);
     }
 }

@@ -1,4 +1,5 @@
-using System.Collections.Generic;
+using System.Collections.Generic;//リストを使用
+using System.Collections;//IEnumeratorを使用
 using UnityEngine;
 using DG.Tweening;//DOTweenを使用
 
@@ -106,8 +107,8 @@ public class BlockManager : MonoBehaviour
         //ブロックを1度生成し、生成したブロックの情報を取得
         currentBlock = blockGenerator.GenerateBlock();
 
-        //ゴーストを生成する
-        MakeGhost();
+        //ゴーストの生成準備を行う
+        PrepareMakeGhost();
     }
 
     /// <summary>
@@ -213,22 +214,40 @@ public class BlockManager : MonoBehaviour
             holdBlockData = null;
         }
 
-        //ゴーストを生成する
-        MakeGhost();
+        //ゴーストの生成準備を行う
+        PrepareMakeGhost();
     }
 
     /// <summary>
-    /// ブロックのゴーストを作成する
+    /// ゴーストの生成準備を行う
     /// </summary>
-    public void MakeGhost()
+    public void PrepareMakeGhost()
     {
-        //既にゴーストが存在しているなら
+        //ゴーストを生成する
+        StartCoroutine(MakeGhost());
+    }
+
+    /// <summary>
+    /// ゴーストを生成する
+    /// </summary>
+    /// <returns>待ち時間</returns>
+    private IEnumerator MakeGhost()
+    {
+        //既にゴーストが存在しているなら（nullエラー回避）
         if (ghostObj != null)
         {
-            if (ghostObj.TryGetComponent(out GhostController _))
+            //無限に繰り返す
+            while(true)
             {
-                //以降の処理を行わない
-                return;
+                //ゴーストが活動を終えたら
+                if (!ghostObj.TryGetComponent(out GhostController _))
+                {
+                    //繰り返し処理から抜け出す
+                    break;
+                }
+
+                //次のフレームへ飛ばす（実質、Updateメソッド）
+                yield return null;
             }
 
             //そのゴーストを消す
@@ -242,7 +261,7 @@ public class BlockManager : MonoBehaviour
         BlockController ghost = Instantiate(CurrentBlock);
 
         //ゴーストのゲームオブジェクトを保持
-        ghostObj=ghost.gameObject;
+        ghostObj = ghost.gameObject;
 
         //ゴーストからBlockControllerを取り除く
         Destroy(ghost);

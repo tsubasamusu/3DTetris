@@ -50,6 +50,9 @@ public class GameManager : MonoBehaviour
         {
             //ゲームオーバー処理を行う
             StartCoroutine(GameOver());
+
+            //重複処理防止
+            BlockManager.instance.IsGameOver = false;
         }
     }
 

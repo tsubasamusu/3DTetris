@@ -25,10 +25,10 @@ public class BlockManager : MonoBehaviour
     private bool isGameOver;//ゲームオーバーかどうか
 
     /// <summary>
-    /// ゲームオーバー判定取得用
+    /// ゲームオーバー判定取得・設定用
     /// </summary>
     public bool IsGameOver
-    { get { return isGameOver; } }
+    { get { return isGameOver; } set { isGameOver = value; } }
 
     /// <summary>
     /// 消化終了判定取得用

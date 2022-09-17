@@ -95,6 +95,29 @@ public class GhostController : MonoBehaviour
     /// </summary>
     private void SetMeRightPos()
     {
+        //4回（孫の数）繰り返す
+        for(int i = 0; i < 4; i++)
+        {
+            //ステージの下枠に埋まっていたら
+            if (Mathf.Abs(transform.GetChild(0).transform.GetChild(i).transform.position.y - 0f) < 0.5f)
+            {
+                //ゴーストを1つ上に移動させる
+                transform.Translate(0f, 1f, 0f);
+            }
+
+            //ステージ上に蓄積されているブロックの数だけ繰り返す
+            for (int j = 0; j < BlockManager.instance.cubeList.Count; j++)
+            {
+                //他のブロックに埋まっていたら
+                if (Mathf.Abs(transform.GetChild(0).transform.GetChild(i).transform.position.y - BlockManager.instance.cubeList[j].transform.position.y)<0.5f
+                    && Mathf.Abs(transform.GetChild(0).transform.GetChild(i).transform.position.x - BlockManager.instance.cubeList[j].transform.position.x) < 0.5)
+                {
+                    //ゴーストを1つ上に移動させる
+                    transform.Translate(0f, 1f, 0f);
+                }
+            }
+        }
+
         //自身のy座標の小数部分（誤差）を取得
         float excess = transform.position.y % 0.5f;
 

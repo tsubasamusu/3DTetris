@@ -60,7 +60,7 @@ public class GhostController : MonoBehaviour
             Ray ray = new(transform.GetChild(0).transform.GetChild(i).transform.position, Vector3.down);
 
             //現在アクティブなブロック以外のコライダーに光線が接触したら
-            if (Physics.Raycast(ray,out RaycastHit hit, 0.6f)&&hit.transform.gameObject!=BlockManager.instance.CurrentBlock.gameObject)
+            if (Physics.Raycast(ray,out RaycastHit hit, 0.6f)&&!hit.transform.root.gameObject.TryGetComponent(out BlockController _))
             {
                 //trueを返す
                 return true;

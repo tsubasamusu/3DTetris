@@ -12,13 +12,13 @@ public class BlockManager : MonoBehaviour
     [HideInInspector]
     public List<GameObject> cubeList = new();//現在、ステージ上に蓄積されている立方体のリスト
 
-    private GameObject currentBlock;//現在アクティブなブロック
+    private BlockController currentBlock;//現在アクティブなブロック
 
     private BlockDataSO.BlockData holdBlockData;//保存されたブロックのデータ
 
     private BlockGenerator blockGenerator;//BlockGenerator
 
-    private GameObject ghost;//ゴースト
+    private GameObject ghostObj;//ゴーストのゲームオブジェクト
 
     private bool endDigestion=true;//消化の処理が終わったかどうか
 
@@ -39,7 +39,7 @@ public class BlockManager : MonoBehaviour
     /// <summary>
     /// 現在アクティブなブロックの取得・設定用
     /// </summary>
-    public GameObject CurrentBlock
+    public BlockController CurrentBlock
     { get { return currentBlock; } set { currentBlock = value; } }
 
     /// <summary>
@@ -83,18 +83,8 @@ public class BlockManager : MonoBehaviour
             currentBlock.transform.GetChild(0).transform.GetChild(0).transform.SetParent(transform);
         }
 
-        //現在アクティブなブロックからBlockControllerを取得出来たら
-        if (currentBlock.TryGetComponent(out BlockController blockController))
-        {
-            //BlockControllerを非活性化（無駄な処理を防ぐ）
-            blockController.enabled = false;
-        }
-        //現在アクティブなブロックからBlockControllerを取得出来なかったら
-        else
-        {
-            //問題を報告
-            Debug.Log("現在アクティブなブロックからのBlockControllerの取得に失敗");
-        }
+        //着地後のブロックのBlockControllerを無効化
+        currentBlock.enabled = false;
 
         //ステージに蓄積されている立方体の数だけ繰り返す
         for (int j = 0; j < cubeList.Count; j++)
@@ -196,7 +186,7 @@ public class BlockManager : MonoBehaviour
     public void HoldBlock(BlockDataSO.BlockData blockData)
     {
         //現在アクティブなブロックを消す
-        Destroy(currentBlock);
+        Destroy(currentBlock.gameObject);
 
         //保存されているブロックがなければ
         if (holdBlockData == null)
@@ -233,42 +223,35 @@ public class BlockManager : MonoBehaviour
     public void MakeGhost()
     {
         //既にゴーストが存在しているなら
-        if (ghost != null)
+        if (ghostObj != null)
         {
-            if (ghost.TryGetComponent(out GhostController _))
+            if (ghostObj.TryGetComponent(out GhostController _))
             {
                 //以降の処理を行わない
                 return;
             }
 
             //そのゴーストを消す
-            Destroy(ghost);
+            Destroy(ghostObj.gameObject);
         }
 
         //MeshRendererのリスト
         List<MeshRenderer> meshRenderersList = new();
 
         //ゴーストを生成
-        ghost = Instantiate(CurrentBlock);
+        BlockController ghost = Instantiate(CurrentBlock);
 
-        //ゴーストからのBlockControllerの取得に成功したら
-        if (ghost.TryGetComponent(out BlockController blockController))
-        {
-            //BlockControllerを非活性化する
-            blockController.enabled = false;
-        }
-        //ゴーストからのBlockControllerの取得に失敗したら
-        else
-        {
-            //問題を報告
-            Debug.Log("ゴーストからのBlockControllerの取得に失敗");
-        }
+        //ゴーストのゲームオブジェクトを保持
+        ghostObj=ghost.gameObject;
+
+        //ゴーストからBlockControllerを取り除く
+        Destroy(ghost);
 
         //4回繰り返す
         for (int i = 0; i < 4; i++)
         {
             //ゴーストの孫からのコライダーの取得に成功したら
-            if (ghost.transform.GetChild(0).transform.GetChild(i).gameObject.TryGetComponent(out BoxCollider collider))
+            if (ghostObj.transform.GetChild(0).transform.GetChild(i).gameObject.TryGetComponent(out BoxCollider collider))
             {
                 //コライダーを非活性化する
                 collider.enabled = false;
@@ -281,7 +264,7 @@ public class BlockManager : MonoBehaviour
             }
 
             //ゴーストからのMeshRendererの取得に成功したら
-            if (ghost.transform.GetChild(0).transform.GetChild(i).gameObject.TryGetComponent(out MeshRenderer meshRenderer))
+            if (ghostObj.transform.GetChild(0).transform.GetChild(i).gameObject.TryGetComponent(out MeshRenderer meshRenderer))
             {
                 //ゴーストのマテリアルを設定
                 meshRenderer.material = ghostMaterial;
@@ -300,7 +283,7 @@ public class BlockManager : MonoBehaviour
         }
 
         //生成したゴーストにGhostControllerを取り付ける
-        StartCoroutine(ghost.AddComponent<GhostController>()
+        StartCoroutine(ghostObj.AddComponent<GhostController>()
 
             //生成したゴーストの初期設定を行う
             .SetUpGhost(meshRenderersList));

@@ -7,32 +7,6 @@ public class GhostController : MonoBehaviour
     //MeshRendererのリスト
     List<MeshRenderer> meshRenderersList = new();
 
-    ///// <summary>
-    ///// 毎フレーム呼び出される
-    ///// </summary>
-    //private void Update()
-    //{
-    //    //下方向のブロックに触れたなら
-    //    if (CheckContactedDown())
-    //    {
-    //        //着地後の処理を行う
-    //        LandingMe();
-
-    //        //以降の処理を行わない
-    //        return;
-    //    }
-
-    //    //消化が終わっていないなら
-    //    if (!BlockManager.instance.EndDigestion)
-    //    {
-    //        //以降の処理を行わない
-    //        return;
-    //    }
-
-    //    //ゴーストを落下させる
-    //    transform.Translate(0f, -1f, 0f);
-    //}
-
     /// <summary>
     /// ゴースト自身の初期設定を行う
     /// </summary>
@@ -43,18 +17,8 @@ public class GhostController : MonoBehaviour
         //MeshRendererのリストを設定
         this.meshRenderersList = meshRenderersList;
 
-        //現在アクティブなブロックからのBlockControllerの取得に失敗したら
-        if (!BlockManager.instance.CurrentBlock.TryGetComponent(out BlockController blockController))
-        {
-            //問題を報告
-            Debug.Log("現在アクティブなブロックからのBlockControllerの取得に失敗");
-
-            //以降の処理を行わない
-            yield break;
-        }
-
         //自身のブロックの情報を取得
-        BlockDataSO.BlockData myBlockData = blockController.BlockData;
+        BlockDataSO.BlockData myBlockData = BlockManager.instance.CurrentBlock.BlockData;
 
         //適切なy座標を取得
         float posY = myBlockData.isEvenWidth ? 25.5f : 25f;
@@ -96,7 +60,7 @@ public class GhostController : MonoBehaviour
             Ray ray = new(transform.GetChild(0).transform.GetChild(i).transform.position, Vector3.down);
 
             //現在アクティブなブロック以外のコライダーに光線が接触したら
-            if (Physics.Raycast(ray,out RaycastHit hit, 0.6f)&&hit.transform.root.gameObject!=BlockManager.instance.CurrentBlock)
+            if (Physics.Raycast(ray,out RaycastHit hit, 0.6f)&&hit.transform.gameObject!=BlockManager.instance.CurrentBlock.gameObject)
             {
                 //trueを返す
                 return true;

@@ -29,7 +29,7 @@ public class BlockDataSO : ScriptableObject
     {　　　　　　　　　
         public BlockName name;//名前
 
-        public GameObject prefab;//プレファブ
+        public BlockController prefab;//プレファブ
 
         public Sprite sprite;//スプライト
 

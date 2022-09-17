@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
         blockGenerator.SetUpBlockGenerator();
 
         //BlockManagerの初期設定を行う
-        BlockManager.instance.SetUpBlockManager(this,blockGenerator);
+        BlockManager.instance.SetUpBlockManager(blockGenerator);
 
         //ゲームスタート演出が終わるまで待つ
         yield return UIManager.instance.PlayGameStart();
@@ -39,6 +39,18 @@ public class GameManager : MonoBehaviour
 
         ///BGMを再生
         SoundManager.instance.PlaySound(SoundDataSO.SoundName.BGM, true);
+    }
+
+    /// <summary>
+    /// 毎フレーム呼び出される
+    /// </summary>
+    private void Update()
+    {
+        if(BlockManager.instance.IsGameOver)
+        {
+            //ゲームオーバー処理を行う
+            StartCoroutine(GameOver());
+        }
     }
 
     /// <summary>
@@ -95,15 +107,6 @@ public class GameManager : MonoBehaviour
             //次のフレームへ飛ばす（実質、Updateメソッド）
             yield return null;
         }
-    }
-
-    /// <summary>
-    /// ゲームオーバー処理の準備を行う
-    /// </summary>
-    public void PrepareGameOver()
-    {
-        //ゲームオーバー処理を行う
-        StartCoroutine(GameOver());
     }
 
     /// <summary>

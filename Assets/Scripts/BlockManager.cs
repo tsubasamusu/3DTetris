@@ -16,25 +16,25 @@ public class BlockManager : MonoBehaviour
 
     private BlockDataSO.BlockData holdBlockData;//保存されたブロックのデータ
 
-    private GameManager gameManager;//GameManager
-
     private BlockGenerator blockGenerator;//BlockGenerator
 
     private GameObject ghost;//ゴースト
 
     private bool endDigestion=true;//消化の処理が終わったかどうか
 
+    private bool isGameOver;//ゲームオーバーかどうか
+
+    /// <summary>
+    /// ゲームオーバー判定取得用
+    /// </summary>
+    public bool IsGameOver
+    { get { return isGameOver; } }
+
     /// <summary>
     /// 消化終了判定取得用
     /// </summary>
     public bool EndDigestion
     { get { return endDigestion; } }
-
-    /// <summary>
-    /// 保存されたブロックのデータの取得用
-    /// </summary>
-    public BlockDataSO.BlockData HoldBlockData
-    { get { return holdBlockData; } }
 
     /// <summary>
     /// 現在アクティブなブロックの取得・設定用
@@ -62,11 +62,8 @@ public class BlockManager : MonoBehaviour
     /// BlockManagerの初期設定を行う
     /// </summary>
     /// <param name="gameManager"></param>
-    public void SetUpBlockManager(GameManager gameManager,BlockGenerator blockGenerator)
+    public void SetUpBlockManager(BlockGenerator blockGenerator)
     {
-        //GameManagerを取得
-        this.gameManager = gameManager;
-
         //BlockGeneratorを取得
         this.blockGenerator = blockGenerator;
     }
@@ -105,8 +102,8 @@ public class BlockManager : MonoBehaviour
             //その立方体が限界ラインを超えていたら
             if (cubeList[j].transform.position.y > 20.5f)
             {
-                //ゲームオーバー処理の準備を行う
-                gameManager.PrepareGameOver();
+                //ゲームオーバー状態に切り替える
+                isGameOver = true;
 
                 //以降の処理を行わない
                 return;

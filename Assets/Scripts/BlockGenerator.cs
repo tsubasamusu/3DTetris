@@ -8,7 +8,7 @@ public class BlockGenerator : MonoBehaviour
     private BlockDataSO blockDataSO;//BlockDataSO
 
     [HideInInspector]
-    public BlockDataSO.BlockData[] nextBlockDatas;//生成予定のブロックのデータの配列
+    private BlockDataSO.BlockData[] nextBlockDatas;//生成予定のブロックのデータの配列
 
     private bool stop;//ブロックの生成停止判定用
 

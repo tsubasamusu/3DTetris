@@ -8,8 +8,6 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private BlockGenerator blockGenerator;//BlockGenerator
 
-    private bool isGameEnd;//ゲーム終了判定用
-
     /// <summary>
     /// ゲーム開始直後に呼び出される
     /// </summary>
@@ -72,7 +70,7 @@ public class GameManager : MonoBehaviour
         while(true)
         {
             //ゲームが終了したら
-            if(isGameEnd)
+            if(BlockManager.instance.IsGameOver)
             {
                 //繰り返し処理を終わる
                 break;
@@ -155,9 +153,6 @@ public class GameManager : MonoBehaviour
     /// </summary>
     private void PrepareGameEnd()
     {
-        //ゲーム終了状態に切り替える
-        isGameEnd = true;
-
         //ブロックの生成を止める
         blockGenerator.StopGenerateBlock();
 

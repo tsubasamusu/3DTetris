@@ -98,6 +98,13 @@ public class GhostController : MonoBehaviour
         //ゴーストが埋もれているか調べて、正常な位置に移動させる
         CheckBuried();
 
+        //現在アクティブなブロックがなかったら（nullエラー回避）
+        if(BlockManager.instance.CurrentBlock==null)
+        {
+            //以降の処理を行わない
+            return;
+        }
+
         //プレーヤーが操作しているブロックと横方向でズレていたら
         if (Mathf.Abs(transform.position.x-BlockManager.instance.CurrentBlock.transform.position.x)>0.5f)
         {

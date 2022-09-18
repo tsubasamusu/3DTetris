@@ -10,9 +10,7 @@ public class BlockGenerator : MonoBehaviour
     [HideInInspector]
     private BlockDataSO.BlockData[] nextBlockDatas;//生成予定のブロックのデータの配列
 
-    private bool stop;//ブロックの生成停止判定用
-
-    private bool setUp;//初期設定が完了したかどうか
+    private bool stopGenerate=true;//生成停止命令用（最初は命令を出している状態）
 
     /// <summary>
     /// BlockGeneratorの初期設定を行う
@@ -29,8 +27,8 @@ public class BlockGenerator : MonoBehaviour
             nextBlockDatas[i] = blockDataSO.blockDataList[Random.Range(0, blockDataSO.blockDataList.Count)];
         }
 
-        //初期設定完了状態に切り替える
-        setUp = true;
+        //生成停止命令を解除する
+        stopGenerate = false;
     }
 
     /// <summary>
@@ -40,15 +38,8 @@ public class BlockGenerator : MonoBehaviour
     /// <returns>BlockController</returns>
     public BlockController GenerateBlock(BlockDataSO.BlockData blockData = null)
     {
-        //初期設定が完了していないなら
-        if(!setUp)
-        {
-            //以降の処理を行わない
-            return null;
-        }
-
-        //ブロックの生成停止命令が出ていたら
-        if(stop)
+        //生成停止命令が出ていれば
+        if(stopGenerate)
         {
             //以降の処理を行わない
             return null;
@@ -114,7 +105,7 @@ public class BlockGenerator : MonoBehaviour
     /// </summary>
     public void StopGenerateBlock()
     {
-        //ブロックの生成を停止する
-        stop = true;
+        //ブロックの生成停止命令を出す
+        stopGenerate = true;
     }
 }

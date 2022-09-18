@@ -63,8 +63,6 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private List<LogoData> logoDatasList=new();//ロゴのデータのリスト
 
-    private Transform cameraTran;//カメラの位置情報
-
     private int score;//得点
 
     /// <summary>
@@ -85,9 +83,6 @@ public class UIManager : MonoBehaviour
 
     public void SetUpUIManager()
     {
-        //カメラの位置情報を取得
-        cameraTran = Camera.main.transform;
-
         //イメージの向きの確認の準備を行う
         PrepareCheck();
 
@@ -465,7 +460,7 @@ public class UIManager : MonoBehaviour
         while (true)
         {
             //適切な角度を取得
-            float angleY = cameraTran.position.z < 0f ? 0f : 180f;
+            float angleY = Camera.main.transform.position.z < 0f ? 0f : 180f;
 
             //角度を設定
             imgHold.transform.eulerAngles= new Vector3(0f, angleY, 0f);

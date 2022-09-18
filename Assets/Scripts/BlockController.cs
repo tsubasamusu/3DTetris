@@ -338,6 +338,7 @@ public class BlockController : MonoBehaviour
         {
             //‘¼‚Ì—§•û‘Ì‚Æ‚Ìx•ûŒü‚Ì‹——£‚ª‹ß‚·‚¬‚é‚©‚ÂA
             if(Mathf.Abs(BlockManager.instance.cubeList[i].transform.position.x-transform.position.x)<(myBlockData.rotLength+1)&&
+
                 //‘¼‚Ì—§•û‘Ì‚Æ‚Ìy•ûŒü‚Ì‹——£‚ª‹ß‚·‚¬‚½‚ç
                 Mathf.Abs(BlockManager.instance.cubeList[i].transform.position.y - transform.position.y)< (myBlockData.rotLength+1))
             {

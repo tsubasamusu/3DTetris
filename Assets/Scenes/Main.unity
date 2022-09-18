@@ -1035,8 +1035,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b9c3be86656bf04fabf25f6da8ed2d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  blockGenerator: {fileID: 1188378069}
-  gameManager: {fileID: 146520558}
   ghostMaterial: {fileID: 2100000, guid: 40cd6d6fe083cd04b8f7e5519089e397, type: 2}
   cubeList: []
 --- !u!4 &537128710
@@ -1839,7 +1837,6 @@ MonoBehaviour:
   txtButton: {fileID: 474453815}
   button: {fileID: 1028339132}
   resultTran: {fileID: 918995866}
-  cameraTran: {fileID: 963194228}
   canvasGroup: {fileID: 1205763493}
   imgNextBlocks:
   - {fileID: 1796132620}
@@ -2506,7 +2503,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalFallSpeed: 3
   specialFallSpeed: 30
-  timeLimit: 180
+  timeLimit: 10
   appointmentsNumber: 3
   scorePerColumn: 10
 --- !u!4 &1080068403
@@ -2682,7 +2679,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blockDataSO: {fileID: 11400000, guid: c249fa5eeebc650468f36a7e549c4f10, type: 2}
-  nextBlockDatas: []
 --- !u!4 &1188378070
 Transform:
   m_ObjectHideFlags: 0

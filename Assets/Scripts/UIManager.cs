@@ -130,10 +130,10 @@ public class UIManager : MonoBehaviour
         imgLogo.DOFade(1f, 1f);
 
         //ボタンのテキストを設定し表示
-        txtButton.DOText("Game Start", 1f).OnComplete(() =>
+        txtButton.DOText("Game Start", 1f)
 
-        //ボタンを活性化
-        button.interactable = true);
+            //ボタンを活性化
+            .OnComplete(() => button.interactable = true);
 
         //ボタンが押された際の処理を登録
         button.onClick.AddListener(() => ClickedButton());
@@ -157,10 +157,10 @@ public class UIManager : MonoBehaviour
         imgButton.DOFade(0f, 1f);
 
         //ボタンのテキストを非表示にする
-        txtButton.DOFade(0f, 1f).OnComplete(() =>
+        txtButton.DOFade(0f, 1f)
 
-        //演出が終わった状態に切り替える
-        end = true);
+            //演出が終わった状態に切り替える
+            .OnComplete(() => end = true);
 
         //演出が終わるまで待つ
         yield return new WaitUntil(() => end == true);
@@ -225,10 +225,10 @@ public class UIManager : MonoBehaviour
         imgLogo.DOFade(1f, 1f);
 
         //ボタンのテキストを可視化
-        txtButton.DOFade(1f,0f).OnComplete(() =>
+        txtButton.DOFade(1f,0f)
 
-        //ボタンのテキストを設定し、表示
-        txtButton.DOText("Restart", 1f));
+            //ボタンのテキストを設定し、表示
+            .OnComplete(() => txtButton.DOText("Restart", 1f));
 
         //ボタンを表示
         imgButton.DOFade(1f, 1f).OnComplete(() =>
@@ -252,10 +252,10 @@ public class UIManager : MonoBehaviour
         imgButton.DOFade(0f, 1f);
 
         //ボタンのテキストを非表示にする
-        txtButton.DOFade(0f, 1f).OnComplete(() =>
+        txtButton.DOFade(0f, 1f)
 
-        //演出が終わった状態に切り替える
-        end = true);
+            //演出が終わった状態に切り替える
+            .OnComplete(() => end = true);
 
         //演出が終わるまで待つ
         yield return new WaitUntil(() => end == true);
@@ -311,16 +311,16 @@ public class UIManager : MonoBehaviour
         imgButton.DOFade(1f, 1f);
 
         //ボタンのテキストを可視化
-        txtButton.DOFade(1f,0f).OnComplete(()=>
+        txtButton.DOFade(1f,0f)
 
-        //ボタンのテキストを設定し、表示
-        txtButton.DOText("Restart", 1f));
+            //ボタンのテキストを設定し、表示
+            .OnComplete(() => txtButton.DOText("Restart", 1f));
 
         //得点を結果表示位置に移動させる
-        txtScore.transform.DOMove(resultTran.position, 1f).OnComplete(() =>
+        txtScore.transform.DOMove(resultTran.position, 1f)
 
-        //ボタンを活性化
-        button.interactable = true);
+            //ボタンを活性化
+            .OnComplete(() => button.interactable = true);
 
         //ボタンが押されるまで待つ
         yield return new WaitUntil(() => clicked == true);
@@ -338,10 +338,10 @@ public class UIManager : MonoBehaviour
         txtScore.DOFade(0f, 1f);
 
         //ボタンのテキストを非表示にする
-        txtButton.DOFade(0f, 1f).OnComplete(() =>
+        txtButton.DOFade(0f, 1f)
 
-        //演出が終わった状態に切り替える
-        end = true);
+            //演出が終わった状態に切り替える
+            .OnComplete(() => end = true);
 
         //演出が終わるまで待つ
         yield return new WaitUntil(() => end == true);
@@ -370,10 +370,10 @@ public class UIManager : MonoBehaviour
         StartCoroutine(UpdateTxtScore());
 
         //得点の記録を更新
-        DOTween.To(() => score,(x) => score = x,score+updateValue,0.5f).OnComplete(()=>
-        
-        //アニメーション終了状態に切り替える
-        end=true);
+        DOTween.To(() => score,(x) => score = x,score+updateValue,0.5f)
+
+            //アニメーション終了状態に切り替える
+            .OnComplete(() => end =true);
 
         //得点の表示を更新する
         IEnumerator UpdateTxtScore()

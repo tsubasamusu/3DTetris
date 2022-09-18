@@ -161,10 +161,10 @@ public class BlockManager : MonoBehaviour
                 if (cubeList[k].transform.position.y > i)
                 {
                     //消化した回数だけ落下させる
-                    cubeList[k].transform.DOMoveY(cubeList[k].transform.position.y - digestedCount, 0.5f).
+                    cubeList[k].transform.DOMoveY(cubeList[k].transform.position.y - digestedCount, 0.5f)
                         
                         //アニメーションが終ったら、消化終了状態に切り替える
-                        OnComplete(()=>endDigestion=true);
+                        .OnComplete(()=>endDigestion=true);
                 }
             }
         }
